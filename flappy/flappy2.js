@@ -39,18 +39,18 @@ window.onload = function() {
             // 3 - Create child nodes
             // Label
             label = new Label('SCORE<br>0');
-            label.x = 9;
-            label.y = 32;        
+            label.x = 30;
+            label.y = 30;        
             label.color = 'white';
             label.font = '16px strong';
-            label.textAlign = 'center';
-            label._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"; 
-            this.addChild(label);
+
+
 
             bg = new Sprite(950, 400);
             bg.image = game.assets[BG];
             // 4 - Add child nodes        
-            this.addChild(bg);        
+            this.addChild(bg);  
+            this.addChild(label);      
 
             // Instance variables
             this.generatePipeTimer = 0;
