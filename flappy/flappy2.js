@@ -3,6 +3,7 @@ enchant();
 var PIPE = 'images/pipeLower.png';
 var PIPE_UPPER = 'images/pipeUpper.png';
 var SHIBA = 'images/shiba.png';
+var BG = 'images/bg.png';
 
 window.onload = function() {
 
@@ -11,7 +12,8 @@ window.onload = function() {
     game.preload(
         PIPE, 
         PIPE_UPPER,
-        SHIBA
+        SHIBA,
+        BG
         );
 
     game.fps = 32;
@@ -44,6 +46,11 @@ window.onload = function() {
             label.textAlign = 'center';
             label._style.textShadow ="-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"; 
             this.addChild(label);
+
+            bg = new Sprite(950, 400);
+            bg.image = game.assets[BG];
+            // 4 - Add child nodes        
+            this.addChild(bg);        
 
             // Instance variables
             this.generatePipeTimer = 0;
