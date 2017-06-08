@@ -59,13 +59,17 @@ window.onload = function() {
             if (this.generatePipeTimer >= 1) {
                 var pipe;
                 this.generatePipeTimer -= 1;
-                pipe = new PipeBG(Math.random() * 3  + 1);
+                pipe = new PipeBG(Math.random() * 2  + 1);
                 this.addChild(pipe);
+
+                pipeUpper = new PipeUpperBG(Math.random() * 3  + 1);
+                this.addChild(pipeUpper);
+
             }
 }
     });
 
-     // Pipe
+    // Pipe Lower
     var PipeBG = Class.create(Sprite, {
         //create pipe 
         initialize: function(rand) {
@@ -74,12 +78,38 @@ window.onload = function() {
             this.image  = Game.instance.assets[PIPE];   
             this.scaleX = 0.3;
             this.scaleY = 0.23 + rand * 0.1;   
-            // this.scaleY = 0.3;   
-            console.log("scaleY = " + this.scaleY);
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
             this.x = 950; // create pipe begin from right of window
-            this.y = (400-(this.height*this.scaleY)/2) - 200;
+            this.y = (400-(this.height*this.scaleY)/2) - 200; //the bottom of pipe begin at edge of window
+        },
+        update: function(evt) { 
+            var xSpeed, game;
+
+            game = Game.instance;
+            xSpeed = 200;
+            
+            this.x -= xSpeed * evt.elapsed * 0.001;
+            this.rotation += this.rotationSpeed * evt.elapsed * 0.001;           
+            if (this.x > game.width) {
+                this.parentNode.removeChild(this);  // remove when it  beyond the bottom of the screen
+            }
+        }
+    });
+
+    // PipeUpper
+    var PipeUpperBG = Class.create(Sprite, {
+        //create pipe 
+        initialize: function(rand) {
+            // Call superclass constructor
+            Sprite.apply(this,[400, 400]);
+            this.image  = Game.instance.assets[PIPE_UPPER];   
+            this.scaleX = 0.3;
+            this.scaleY = 0.05 + rand * 0.1;   
+            this.rotationSpeed = 0;
+            this.addEventListener(Event.ENTER_FRAME, this.update);
+            this.x = 950; // create pipe begin from right of window
+            this.y = (0 - (200-(this.height*this.scaleY)/2 )); //the bottom of pipe begin at edge of window
         },
         update: function(evt) { 
             var xSpeed, game;
