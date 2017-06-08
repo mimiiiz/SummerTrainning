@@ -2,7 +2,7 @@ enchant();
 
 var PIPE = 'images/pipeLower.png';
 var PIPE_UPPER = 'images/pipeUpper.png';
-var SHIBA = 'images/shiba.png';
+var SHIBA = 'images/shiba0.png';
 var BG = 'images/bg.png';
 
 window.onload = function() {
@@ -31,7 +31,7 @@ window.onload = function() {
     var SceneGame = Class.create(Scene, {
          // The main gameplay scene.     
         initialize: function() {
-            var game, pipeBG;
+            var game, pipeBG, shiba;
             // 1 - Call superclass constructor
             Scene.apply(this);
             // 2 - Access to the game singleton instance
@@ -44,8 +44,6 @@ window.onload = function() {
             label.color = 'white';
             label.font = '16px strong';
 
-
-
             bg = new Sprite(950, 400);
             bg.image = game.assets[BG];
             // 4 - Add child nodes        
@@ -57,6 +55,14 @@ window.onload = function() {
 
             // Update
             this.addEventListener(Event.ENTER_FRAME, this.update); //update ice
+
+            // Shiba
+            shiba = new Shiba();
+            // shiba.x = game.width/2 - shiba.width/2;
+            shiba.x = 0;
+            shiba.y = 70;
+            this.shiba = shiba;
+            this.addChild(shiba);
 
         },
 
@@ -76,6 +82,32 @@ window.onload = function() {
 }
     });
 
+     // Shiba
+    var Shiba = Class.create(Sprite, {
+        // The player character.     
+        initialize: function() {
+            // 1 - Call superclass constructor
+            Sprite.apply(this,[270, 210]);
+            this.image = Game.instance.assets[SHIBA];
+            this.scaleX = 0.3;
+            this.scaleY = 0.3;
+            // 2 - Animate
+            this.animationDuration = 0;
+            this.addEventListener(Event.ENTER_FRAME, this.updateAnimation);
+        },
+        updateAnimation: function (evt) {        
+            this.animationDuration += evt.elapsed * 0.001;       
+            if (this.animationDuration >= 0.25) {
+                this.frame = (this.frame + 1) % 2;  //frame1 = up , frame2 = down
+                this.animationDuration -= 0.25;
+            }
+        },
+        switchToLaneNumber: function(lane){     
+            var targetX = 160 - this.width/2 + (lane-1)*90;
+            this.x = targetX;
+        }       
+    });
+
     // Pipe Lower
     var PipeBG = Class.create(Sprite, {
         //create pipe 
@@ -84,7 +116,7 @@ window.onload = function() {
             Sprite.apply(this,[400, 400]);
             this.image  = Game.instance.assets[PIPE];   
             this.scaleX = 0.3;
-            this.scaleY = 0.23 + rand * 0.1;   
+            this.scaleY = 0.13 + rand * 0.1;   
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
             this.x = 950; // create pipe begin from right of window
@@ -112,7 +144,7 @@ window.onload = function() {
             Sprite.apply(this,[400, 400]);
             this.image  = Game.instance.assets[PIPE_UPPER];   
             this.scaleX = 0.3;
-            this.scaleY = 0.05 + rand * 0.1;   
+            this.scaleY = 0.02 + rand * 0.1;   
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
             this.x = 950; // create pipe begin from right of window
