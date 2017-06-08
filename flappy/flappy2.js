@@ -7,7 +7,7 @@ var BG = 'images/bg.png';
 
 window.onload = function() {
 
-    var game = new Game(950, 400);
+    var game = new Game(700, 400);
     // 4 - Preload resources
     game.preload(
         PIPE, 
@@ -43,6 +43,7 @@ window.onload = function() {
             label.y = 30;        
             label.color = 'white';
             label.font = '16px strong';
+            this.scoreLabel = label;
 
             bg = new Sprite(950, 400);
             bg.image = game.assets[BG];
@@ -54,19 +55,29 @@ window.onload = function() {
             this.generatePipeTimer = 0;
 
             // Update
-            this.addEventListener(Event.ENTER_FRAME, this.update); //update ice
+            this.addEventListener(Event.ENTER_FRAME, this.update); //update pipe
 
             // Shiba
             shiba = new Shiba();
             // shiba.x = game.width/2 - shiba.width/2;
             shiba.x = 0;
-            shiba.y = 70;
+            shiba.y = 80;
             this.shiba = shiba;
             this.addChild(shiba);
+
+            this.scoreTimer = 0;
+            this.score = 0;
 
         },
 
         update: function(evt) {
+
+            this.scoreTimer += evt.elapsed * 0.001;
+            if (this.scoreTimer >= 1) {
+                this.setScore(this.score + 1);
+                this.scoreTimer -= 1;
+            }
+
             // Check if it's time to create a new set of obstacles
             this.generatePipeTimer += evt.elapsed * 0.001;
             if (this.generatePipeTimer >= 1) {
@@ -79,7 +90,13 @@ window.onload = function() {
                 this.addChild(pipeUpper);
 
             }
-}
+        },
+
+        setScore: function (value) {
+            this.score = value;
+            this.scoreLabel.text = 'SCORE<br>' + this.score;
+                
+        }
     });
 
      // Shiba
@@ -119,7 +136,7 @@ window.onload = function() {
             this.scaleY = 0.13 + rand * 0.1;   
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
-            this.x = 950; // create pipe begin from right of window
+            this.x = 700; // create pipe begin from right of window
             this.y = (400-(this.height*this.scaleY)/2) - 200; //the bottom of pipe begin at edge of window
         },
         update: function(evt) { 
@@ -147,7 +164,7 @@ window.onload = function() {
             this.scaleY = 0.02 + rand * 0.1;   
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
-            this.x = 950; // create pipe begin from right of window
+            this.x = 700; // create pipe begin from right of window
             this.y = (0 - (200-(this.height*this.scaleY)/2 )); //the bottom of pipe begin at edge of window
         },
         update: function(evt) { 
