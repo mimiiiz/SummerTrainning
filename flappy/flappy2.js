@@ -4,6 +4,7 @@ var PIPE = 'images/pipeLower.png';
 var PIPE_UPPER = 'images/pipeUpper.png';
 var SHIBA = 'images/shiba0.png';
 var BG = 'images/bg.png';
+var SOUND_BG = 'sounds/comedy.mp3'
 
 window.onload = function() {
 
@@ -13,7 +14,8 @@ window.onload = function() {
         PIPE, 
         PIPE_UPPER,
         SHIBA,
-        BG
+        BG,
+        SOUND_BG
         );
 
     game.fps = 32;
@@ -31,11 +33,13 @@ window.onload = function() {
     var SceneGame = Class.create(Scene, {
          // The main gameplay scene.     
         initialize: function() {
-            var game, pipeBG, shiba;
+            var game, pipeBG, shiba, sound_bg;
             // 1 - Call superclass constructor
             Scene.apply(this);
             // 2 - Access to the game singleton instance
             game = Game.instance;
+            this.sound_bg = game.assets[SOUND_BG];
+            this.sound_bg.play();
             // 3 - Create child nodes
             // Label
             label = new Label('SCORE<br>0');
@@ -89,6 +93,11 @@ window.onload = function() {
                 pipeUpper = new PipeUpperBG(Math.random() * 3  + 1);
                 this.addChild(pipeUpper);
 
+            }
+
+            // Loop sound_bg
+            if (this.sound_bg.currentTime >= this.sound_bg.duration ){
+                this.sound_bg.play();
             }
         },
 
