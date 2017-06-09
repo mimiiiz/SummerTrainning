@@ -1,6 +1,6 @@
 enchant();
 var SCREEN_W = 950;
-var SCREEN_H = 500;
+var SCREEN_H = 400;
 var game = null;
 
 var PIPE = 'images/pipeLower.png';
@@ -12,7 +12,7 @@ window.onload = function() {
     game.fps = 32;
 
     game.preload(
-        PIPE, 
+        PIPE,
         PIPE_UPPER,
         SHIBA
     );
