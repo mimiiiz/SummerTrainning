@@ -1,6 +1,6 @@
 enchant();
 var SCREEN_W = 950;
-var SCREEN_H = 400;
+var SCREEN_H = 500;
 var game = null;
 
 var PIPE = 'images/pipeLower.png';
