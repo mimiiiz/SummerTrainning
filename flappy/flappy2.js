@@ -236,7 +236,7 @@ window.onload = function() {
 	        this.backgroundColor = 'black';
 	        // Game Over label
 			gameOverLabel = new Label("GAME OVER<br><br><br>Tap to Restart");
-			gameOverLabel.x = 8;
+			gameOverLabel.x = 200;
 			gameOverLabel.y = 128;
 			gameOverLabel.color = 'white';
 			gameOverLabel.font = '32px strong';
@@ -244,8 +244,8 @@ window.onload = function() {
 
 			// Score label
 			scoreLabel = new Label('SCORE<br>' + score);
-			scoreLabel.x = 9;
-			scoreLabel.y = 32;        
+			scoreLabel.x = 205;
+			scoreLabel.y = 200;        
 			scoreLabel.color = 'white';
 			scoreLabel.font = '16px strong';
 			scoreLabel.textAlign = 'center';  
