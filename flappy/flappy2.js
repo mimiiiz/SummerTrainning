@@ -6,8 +6,8 @@ var SHIBA = 'images/shiba0.png';
 var BG = 'images/bg11.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 
-var posY = 200;						//キャラクタの初期位置縦
-var posX = 40;						//キャラクタの初期位置横
+var posY = 115;						//キャラクタの初期位置縦
+var posX = 0;						//キャラクタの初期位置横
 var vy = 0;							//キャラクタの初速度初期値
 var speed = 5;						//ジャンプ中の初速度
 var jump = false;	
@@ -70,7 +70,7 @@ window.onload = function() {
             shiba = new Shiba();
             // shiba.x = game.width/2 - shiba.width/2;
             shiba.x = 0;
-            shiba.y = 80;
+            shiba.y = 115;
             this.shiba = shiba;
             this.addChild(shiba);
 
@@ -137,11 +137,6 @@ window.onload = function() {
                 vy = 0;								//次のジャンプまでは加速度0に
                 jump = false;						//ジャンプフラグも元に戻す
             }
-            //背景処理
-     //        if(game.frame%64 ===0){
- 				// bg.x += 64;							//背景を右にずらす（ループさせる）
-     //        }
-     //        bg.x--									//背景を左にずらす
         },
 
         setScore: function (value) {
