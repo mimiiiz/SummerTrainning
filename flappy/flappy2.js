@@ -107,16 +107,11 @@ window.onload = function() {
 
             // Check if it's time to create a new set of obstacles
             this.generatePipeTimer += evt.elapsed * 0.001;
-            if (this.generatePipeTimer >= 1) {
+            if (this.generatePipeTimer >= 2) {
                 var pipe;
-                this.generatePipeTimer -= 1;
-                pipe = new PipeBG(Math.random() * 2  + 1);
-                // this.addChild(pipe);
-                //this.addChild(pipe);
+                this.generatePipeTimer -= 2;
+                pipe = new PipeBG(Math.floor(Math.random() * 2  + 1));
 				this.pipeGroup.addChild(pipe);
-
-                // pipeUpper = new PipeUpperBG(Math.random() * 3  + 1);
-                // this.addChild(pipeUpper);
 
             }
 
@@ -151,11 +146,14 @@ window.onload = function() {
 			for (var i = this.pipeGroup.childNodes.length - 1; i >= 0; i--) {
 			    var pipe;
 			    pipe = this.pipeGroup.childNodes[i];
-			    if (pipe.intersect(this.shiba)){
-			        this.pipeGroup.removeChild(pipe);
+
+			    // if (pipe.intersect(this.shiba)){
+			    if (pipe.within(this.shiba, 50)){
+			        
 			        // Game over
 			        //stop sound
-					// this.bgm.stop(); 
+					this.sound_bg.stop(); 
+					this.pipeGroup.removeChild(pipe);
 					game.replaceScene(new SceneGameOver(this.score));        
 					break;
 			    }
@@ -189,11 +187,7 @@ window.onload = function() {
                 this.frame = (this.frame + 1) % 2;  //frame1 = up , frame2 = down
                 this.animationDuration -= 0.25;
             }
-        },
-        // switchToLaneNumber: function(lane){     
-        //     var targetX = 160 - this.width/2 + (lane-1)*90;
-        //     this.x = targetX;
-        // }       
+        },     
     });
 
     // Pipe Lower
@@ -233,34 +227,6 @@ window.onload = function() {
             }	
         }
     });
-
-    // // PipeUpper
-    // var PipeUpperBG = Class.create(Sprite, {
-    //     //create pipe 
-    //     initialize: function(rand) {
-    //         // Call superclass constructor
-    //         Sprite.apply(this,[400, 400]);
-    //         this.image  = Game.instance.assets[PIPE_UPPER];   
-    //         this.scaleX = 0.3;
-    //         this.scaleY = 0.02 + rand * 0.1;   
-    //         this.rotationSpeed = 0;
-    //         this.addEventListener(Event.ENTER_FRAME, this.update);
-    //         this.x = 700; // create pipe begin from right of window
-    //         this.y = (0 - (200-(this.height*this.scaleY)/2 )); //the bottom of pipe begin at edge of window
-    //     },
-    //     update: function(evt) { 
-    //         var xSpeed, game;
-
-    //         game = Game.instance;
-    //         xSpeed = 200;
-            
-    //         this.x -= xSpeed * evt.elapsed * 0.001;
-    //         this.rotation += this.rotationSpeed * evt.elapsed * 0.001;           
-    //         if (this.x > game.width) {
-    //             this.parentNode.removeChild(this);  // remove when it  beyond the bottom of the screen
-    //         }
-    //     }
-    // });
 
 	// SceneGameOver  
 	var SceneGameOver = Class.create(Scene, {
