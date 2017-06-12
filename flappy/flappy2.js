@@ -1,9 +1,9 @@
 enchant();
 
-var PIPE = 'images/pipeLower.png';
+var PIPE = 'images/cactus01.png';
 var PIPE_UPPER = 'images/pipeUpper.png';
 var SHIBA = 'images/shiba0.png';
-var BG = 'images/bg.png';
+var BG = 'images/bg11.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 
 var posY = 200;						//キャラクタの初期位置縦
@@ -108,8 +108,8 @@ window.onload = function() {
                 pipe = new PipeBG(Math.random() * 2  + 1);
                 this.addChild(pipe);
 
-                pipeUpper = new PipeUpperBG(Math.random() * 3  + 1);
-                this.addChild(pipeUpper);
+                // pipeUpper = new PipeUpperBG(Math.random() * 3  + 1);
+                // this.addChild(pipeUpper);
 
             }
 
@@ -182,14 +182,19 @@ window.onload = function() {
         //create pipe 
         initialize: function(rand) {
             // Call superclass constructor
-            Sprite.apply(this,[400, 400]);
+            Sprite.apply(this,[161, 196]);
             this.image  = Game.instance.assets[PIPE];   
             this.scaleX = 0.3;
             this.scaleY = 0.13 + rand * 0.1;   
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
             this.x = 700; // create pipe begin from right of window
-            this.y = (400-(this.height*this.scaleY)/2) - 200; //the bottom of pipe begin at edge of window
+            // this.y = 130; //the bottom of pipe begin at edge of window
+            this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of pipe begin at edge of window
+            console.log("this.y = " + this.y);
+            console.log("=================");
+
+        
         },
         update: function(evt) { 
             var xSpeed, game;
@@ -202,34 +207,40 @@ window.onload = function() {
             if (this.x > game.width) {
                 this.parentNode.removeChild(this);  // remove when it  beyond the bottom of the screen
             }
+
+            this.animationDuration += evt.elapsed * 0.001;       
+            if (this.animationDuration >= 0.25) {
+                this.frame = (this.frame + 1) % 2;  //frame1 = up , frame2 = down
+                this.animationDuration -= 0.25;
+            }	
         }
     });
 
-    // PipeUpper
-    var PipeUpperBG = Class.create(Sprite, {
-        //create pipe 
-        initialize: function(rand) {
-            // Call superclass constructor
-            Sprite.apply(this,[400, 400]);
-            this.image  = Game.instance.assets[PIPE_UPPER];   
-            this.scaleX = 0.3;
-            this.scaleY = 0.02 + rand * 0.1;   
-            this.rotationSpeed = 0;
-            this.addEventListener(Event.ENTER_FRAME, this.update);
-            this.x = 700; // create pipe begin from right of window
-            this.y = (0 - (200-(this.height*this.scaleY)/2 )); //the bottom of pipe begin at edge of window
-        },
-        update: function(evt) { 
-            var xSpeed, game;
+    // // PipeUpper
+    // var PipeUpperBG = Class.create(Sprite, {
+    //     //create pipe 
+    //     initialize: function(rand) {
+    //         // Call superclass constructor
+    //         Sprite.apply(this,[400, 400]);
+    //         this.image  = Game.instance.assets[PIPE_UPPER];   
+    //         this.scaleX = 0.3;
+    //         this.scaleY = 0.02 + rand * 0.1;   
+    //         this.rotationSpeed = 0;
+    //         this.addEventListener(Event.ENTER_FRAME, this.update);
+    //         this.x = 700; // create pipe begin from right of window
+    //         this.y = (0 - (200-(this.height*this.scaleY)/2 )); //the bottom of pipe begin at edge of window
+    //     },
+    //     update: function(evt) { 
+    //         var xSpeed, game;
 
-            game = Game.instance;
-            xSpeed = 200;
+    //         game = Game.instance;
+    //         xSpeed = 200;
             
-            this.x -= xSpeed * evt.elapsed * 0.001;
-            this.rotation += this.rotationSpeed * evt.elapsed * 0.001;           
-            if (this.x > game.width) {
-                this.parentNode.removeChild(this);  // remove when it  beyond the bottom of the screen
-            }
-        }
-    });
+    //         this.x -= xSpeed * evt.elapsed * 0.001;
+    //         this.rotation += this.rotationSpeed * evt.elapsed * 0.001;           
+    //         if (this.x > game.width) {
+    //             this.parentNode.removeChild(this);  // remove when it  beyond the bottom of the screen
+    //         }
+    //     }
+    // });
 }
