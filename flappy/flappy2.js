@@ -39,7 +39,7 @@ window.onload = function() {
     var SceneGame = Class.create(Scene, {
          // The main gameplay scene.     
         initialize: function() {
-            var game, pipeBG, shiba, sound_bg;
+            var game, pipeBG, shiba, sound_bg , pipeGroup;
             // var posY = 200, posX = 40, vy = 0, speed = 5, jump = false;
 
             // 1 - Call superclass constructor
@@ -53,7 +53,7 @@ window.onload = function() {
             label = new Label('SCORE<br>0');
             label.x = 30;
             label.y = 30;        
-            label.color = 'white';
+            label.color = 'black';
             label.font = '16px strong';
             this.scoreLabel = label;
 
@@ -90,6 +90,11 @@ window.onload = function() {
             this.scoreTimer = 0;
             this.score = 0;
 
+            // pipe group
+			pipeGroup = new Group();
+			this.pipeGroup = pipeGroup;
+			this.addChild(pipeGroup);
+
         },
 
         update: function(evt) {
@@ -106,7 +111,9 @@ window.onload = function() {
                 var pipe;
                 this.generatePipeTimer -= 1;
                 pipe = new PipeBG(Math.random() * 2  + 1);
-                this.addChild(pipe);
+                // this.addChild(pipe);
+                //this.addChild(pipe);
+				this.pipeGroup.addChild(pipe);
 
                 // pipeUpper = new PipeUpperBG(Math.random() * 3  + 1);
                 // this.addChild(pipeUpper);
@@ -118,8 +125,9 @@ window.onload = function() {
                 this.sound_bg.play();
             }
 
- //           speed++;
- //           speed%=15; 
+            //  JUMPING  //
+            // speed++;
+            // speed%=15; 
             if(jump === true){						//ジャンプ中
             	this.shiba.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
             	vy-=0.25;								//加速度調整(マイナスもあるよ)
@@ -137,6 +145,22 @@ window.onload = function() {
                 vy = 0;								//次のジャンプまでは加速度0に
                 jump = false;						//ジャンプフラグも元に戻す
             }
+            // end JUMPING
+
+            // Check collision
+			for (var i = this.pipeGroup.childNodes.length - 1; i >= 0; i--) {
+			    var pipe;
+			    pipe = this.pipeGroup.childNodes[i];
+			    if (pipe.intersect(this.shiba)){
+			        this.pipeGroup.removeChild(pipe);
+			        // Game over
+			        //stop sound
+					// this.bgm.stop(); 
+					game.replaceScene(new SceneGameOver(this.score));        
+					break;
+			    }
+			    // Score increase as time passes
+			}
         },
 
         setScore: function (value) {
@@ -166,10 +190,10 @@ window.onload = function() {
                 this.animationDuration -= 0.25;
             }
         },
-        switchToLaneNumber: function(lane){     
-            var targetX = 160 - this.width/2 + (lane-1)*90;
-            this.x = targetX;
-        }       
+        // switchToLaneNumber: function(lane){     
+        //     var targetX = 160 - this.width/2 + (lane-1)*90;
+        //     this.x = targetX;
+        // }       
     });
 
     // Pipe Lower
@@ -178,16 +202,15 @@ window.onload = function() {
         initialize: function(rand) {
             // Call superclass constructor
             Sprite.apply(this,[161, 196]);
+            // Sprite.apply(this,[161, 196]);
             this.image  = Game.instance.assets[PIPE];   
             this.scaleX = 0.3;
             this.scaleY = 0.13 + rand * 0.1;   
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
             this.x = 700; // create pipe begin from right of window
-            // this.y = 130; //the bottom of pipe begin at edge of window
             this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of pipe begin at edge of window
-            console.log("this.y = " + this.y);
-            console.log("=================");
+            this.animationDuration = 0;
 
         
         },
@@ -238,4 +261,40 @@ window.onload = function() {
     //         }
     //     }
     // });
-}
+
+	// SceneGameOver  
+	var SceneGameOver = Class.create(Scene, {
+	    initialize: function(score) {
+	        var gameOverLabel, scoreLabel;
+	        Scene.apply(this);
+	        this.backgroundColor = 'black';
+	        // Game Over label
+			gameOverLabel = new Label("GAME OVER<br><br><br>Tap to Restart");
+			gameOverLabel.x = 8;
+			gameOverLabel.y = 128;
+			gameOverLabel.color = 'white';
+			gameOverLabel.font = '32px strong';
+			gameOverLabel.textAlign = 'center';
+
+			// Score label
+			scoreLabel = new Label('SCORE<br>' + score);
+			scoreLabel.x = 9;
+			scoreLabel.y = 32;        
+			scoreLabel.color = 'white';
+			scoreLabel.font = '16px strong';
+			scoreLabel.textAlign = 'center';  
+
+			// Add labels
+			this.addChild(gameOverLabel);
+			this.addChild(scoreLabel);
+
+			// Listen for taps
+			this.addEventListener(Event.TOUCH_START, this.touchToRestart);
+			
+	    },
+	    touchToRestart: function(evt) {
+		    var game = Game.instance;
+		    game.replaceScene(new SceneGame());
+		}
+	});
+};
