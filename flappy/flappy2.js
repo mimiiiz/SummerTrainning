@@ -6,6 +6,12 @@ var SHIBA = 'images/shiba0.png';
 var BG = 'images/bg.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 
+var posY = 200;						//キャラクタの初期位置縦
+var posX = 40;						//キャラクタの初期位置横
+var vy = 0;							//キャラクタの初速度初期値
+var speed = 5;						//ジャンプ中の初速度
+var jump = false;	
+
 window.onload = function() {
 
     var game = new Game(700, 400);
@@ -34,6 +40,8 @@ window.onload = function() {
          // The main gameplay scene.     
         initialize: function() {
             var game, pipeBG, shiba, sound_bg;
+            // var posY = 200, posX = 40, vy = 0, speed = 5, jump = false;
+
             // 1 - Call superclass constructor
             Scene.apply(this);
             // 2 - Access to the game singleton instance
@@ -58,9 +66,6 @@ window.onload = function() {
             // Instance variables
             this.generatePipeTimer = 0;
 
-            // Update
-            this.addEventListener(Event.ENTER_FRAME, this.update); //update pipe
-
             // Shiba
             shiba = new Shiba();
             // shiba.x = game.width/2 - shiba.width/2;
@@ -68,6 +73,19 @@ window.onload = function() {
             shiba.y = 80;
             this.shiba = shiba;
             this.addChild(shiba);
+
+            // Update
+            this.addEventListener(Event.ENTER_FRAME, this.update); //update pipe
+
+            shiba.x = posX;
+    		shiba.y = posY;
+
+    		this.addEventListener("touchstart",function(e){
+	        	if(shiba.y === posY){
+		        	vy = speed; 								//タッチされた際の初速度
+	            	jump = true;							//ジャンプ中フラグを立てる
+	        	}
+			});
 
             this.scoreTimer = 0;
             this.score = 0;
@@ -99,6 +117,31 @@ window.onload = function() {
             if (this.sound_bg.currentTime >= this.sound_bg.duration ){
                 this.sound_bg.play();
             }
+
+ //           speed++;
+ //           speed%=15; 
+            if(jump === true){						//ジャンプ中
+            	this.shiba.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
+            	vy-=0.25;								//加速度調整(マイナスもあるよ)
+            }else{							//ジャンプ中以外の処理
+                if(game.frame%5 === 0){				//5フレームごとに姿勢を変えよう
+                    if(this.shiba.frame === 1){
+                        this.shiba.frame = 2;
+                    }else{
+                        this.shiba.frame = 1;
+                    }//1フレームと2フレームを交互に
+                }
+            }
+            if(this.shiba.y > posY){						//下に落っこちないように
+                this.shiba.y = posY;						//位置調整(加速度によっては食い込むよ)
+                vy = 0;								//次のジャンプまでは加速度0に
+                jump = false;						//ジャンプフラグも元に戻す
+            }
+            //背景処理
+     //        if(game.frame%64 ===0){
+ 				// bg.x += 64;							//背景を右にずらす（ループさせる）
+     //        }
+     //        bg.x--									//背景を左にずらす
         },
 
         setScore: function (value) {
