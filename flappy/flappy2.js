@@ -5,6 +5,7 @@ var PIPE_UPPER = 'images/pipeUpper.png';
 var SHIBA = 'images/shiba0.png';
 var BG = 'images/bg11.png';
 var SOUND_BG = 'sounds/comedy.mp3'
+var SOUND_LOST = 'sounds/lost.mp3'
 
 var posY = 115;						//キャラクタの初期位置縦
 var posX = 0;						//キャラクタの初期位置横
@@ -21,7 +22,8 @@ window.onload = function() {
         PIPE_UPPER,
         SHIBA,
         BG,
-        SOUND_BG
+        SOUND_BG,
+        SOUND_LOST
         );
 
     game.fps = 32;
@@ -39,7 +41,7 @@ window.onload = function() {
     var SceneGame = Class.create(Scene, {
          // The main gameplay scene.     
         initialize: function() {
-            var game, pipeBG, shiba, sound_bg , pipeGroup;
+            var game, pipeBG, shiba, sound_bg , pipeGroup, sound_lost;
             // var posY = 200, posX = 40, vy = 0, speed = 5, jump = false;
 
             // 1 - Call superclass constructor
@@ -47,6 +49,7 @@ window.onload = function() {
             // 2 - Access to the game singleton instance
             game = Game.instance;
             this.sound_bg = game.assets[SOUND_BG];
+            this.sound_lost = game.assets[SOUND_LOST];
             this.sound_bg.play();
             // 3 - Create child nodes
             // Label
@@ -59,6 +62,7 @@ window.onload = function() {
 
             bg = new Sprite(950, 400);
             bg.image = game.assets[BG];
+            // bg.x = 950
             // 4 - Add child nodes        
             this.addChild(bg);  
             this.addChild(label);      
@@ -107,9 +111,9 @@ window.onload = function() {
 
             // Check if it's time to create a new set of obstacles
             this.generatePipeTimer += evt.elapsed * 0.001;
-            if (this.generatePipeTimer >= 2) {
+            if (this.generatePipeTimer >= 4) {
                 var pipe;
-                this.generatePipeTimer -= 2;
+                this.generatePipeTimer -= 4;
                 pipe = new PipeBG(Math.floor(Math.random() * 2  + 1));
 				this.pipeGroup.addChild(pipe);
 
@@ -125,7 +129,7 @@ window.onload = function() {
             // speed%=15; 
             if(jump === true){						//ジャンプ中
             	this.shiba.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
-            	vy-=0.25;								//加速度調整(マイナスもあるよ)
+            	vy-=0.15;								//加速度調整(マイナスもあるよ)
             }else{							//ジャンプ中以外の処理
                 if(game.frame%5 === 0){				//5フレームごとに姿勢を変えよう
                     if(this.shiba.frame === 1){
@@ -140,6 +144,11 @@ window.onload = function() {
                 vy = 0;								//次のジャンプまでは加速度0に
                 jump = false;						//ジャンプフラグも元に戻す
             }
+     //        //背景処理
+     //        if(game.frame%950 ===0){
+ 				// bg.x -= 950;							//背景を右にずらす（ループさせる）
+     //        }
+     //        bg.x++		
             // end JUMPING
 
             // Check collision
@@ -152,7 +161,8 @@ window.onload = function() {
 			        
 			        // Game over
 			        //stop sound
-					this.sound_bg.stop(); 
+					this.sound_bg.stop();
+					this.sound_lost.play(); 
 					this.pipeGroup.removeChild(pipe);
 					game.replaceScene(new SceneGameOver(this.score));        
 					break;
@@ -237,7 +247,7 @@ window.onload = function() {
 	        // Game Over label
 			gameOverLabel = new Label("GAME OVER<br><br><br>Tap to Restart");
 			gameOverLabel.x = 200;
-			gameOverLabel.y = 128;
+			gameOverLabel.y = 110;
 			gameOverLabel.color = 'white';
 			gameOverLabel.font = '32px strong';
 			gameOverLabel.textAlign = 'center';
@@ -245,7 +255,7 @@ window.onload = function() {
 			// Score label
 			scoreLabel = new Label('SCORE<br>' + score);
 			scoreLabel.x = 205;
-			scoreLabel.y = 200;        
+			scoreLabel.y = 182;        
 			scoreLabel.color = 'white';
 			scoreLabel.font = '16px strong';
 			scoreLabel.textAlign = 'center';  
