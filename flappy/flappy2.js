@@ -87,7 +87,8 @@ window.onload = function() {
     		this.addEventListener("touchstart",function(e){
 	        	if(shiba.y === posY){
 		        	vy = speed; 								//タッチされた際の初速度
-	            	jump = true;							//ジャンプ中フラグを立てる
+	            	jump = true;
+	            	this.score += 4;								//ジャンプ中フラグを立てる
 	        	}
 			});
 
@@ -129,7 +130,7 @@ window.onload = function() {
             // speed%=15; 
             if(jump === true){						//ジャンプ中
             	this.shiba.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
-            	vy-=0.15;								//加速度調整(マイナスもあるよ)
+            	vy-=0.15;							//加速度調整(マイナスもあるよ)
             }else{							//ジャンプ中以外の処理
                 if(game.frame%5 === 0){				//5フレームごとに姿勢を変えよう
                     if(this.shiba.frame === 1){
