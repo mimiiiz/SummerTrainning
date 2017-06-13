@@ -1,7 +1,7 @@
 enchant();
 
-var ENEMY = 'images/cactus01.png';
-var HERO = 'images/shiba0.png';
+var ENEMY = 'images/1_cactus.png';
+var HERO = 'images/1_shiba.png';
 var BG = 'images/bg11.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 var SOUND_LOST = 'sounds/lost.mp3'
@@ -33,8 +33,8 @@ window.onload = function() {
     game.onload = function() {
         
         game.rootScene.backgroundColor = "#000";
-        // var scene = new SceneGame();
-        var scene = new ThemeSelectScene();
+        var scene = new SceneGame();
+        // var scene = new ThemeSelectScene();
         game.pushScene(scene);
 
     }
