@@ -5,6 +5,9 @@ var HERO = 'images/shiba0.png';
 var BG = 'images/bg11.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 var SOUND_LOST = 'sounds/lost.mp3'
+var THEME_1 = 'images/1_theme.png';
+var THEME_2 = 'images/2_theme.png';
+var THEME_3 = 'images/3_theme.png';
 
 var posY = 115;						//キャラクタの初期位置縦
 var posX = 0;						//キャラクタの初期位置横
@@ -21,7 +24,8 @@ window.onload = function() {
         HERO,
         BG,
         SOUND_BG,
-        SOUND_LOST
+        SOUND_LOST,
+        THEME_1, THEME_2, THEME_3
         );
 
     game.fps = 32;
@@ -29,7 +33,8 @@ window.onload = function() {
     game.onload = function() {
         
         game.rootScene.backgroundColor = "#000";
-        var scene = new SceneGame();
+        // var scene = new SceneGame();
+        var scene = new ThemeSelectScene();
         game.pushScene(scene);
 
     }
@@ -176,6 +181,56 @@ window.onload = function() {
                 
         }
     });
+
+	var ThemeSelectScene = Class.create(Scene, {
+		initialize: function(){
+			var theme_select, theme_1, theme_2, theme_3 ;
+			Scene.apply(this);
+	        this.backgroundColor = '#72c0db';
+
+	        theme_1 = new Theme1();
+	        theme_1.x = 15;
+	        theme_1.y = 150;
+
+	        theme_2 = new Theme2();
+	        theme_2.x = 245;
+	        theme_2.y = 150;
+
+	        theme_3 = new Theme3();
+	        theme_3.x = 475;
+	        theme_3.y = 150;
+
+	        this.addChild(theme_1);
+	        this.addChild(theme_2);
+	        this.addChild(theme_3);
+
+
+		}
+
+	});
+
+	var Theme1 = Class.create(Sprite,{
+		initialize: function(){
+			Sprite.apply(this, [205, 125]);
+			this.image = Game.instance.assets[THEME_1];
+
+		}
+	});
+	var Theme2 = Class.create(Sprite,{
+		initialize: function(){
+			Sprite.apply(this, [205, 125]);
+			this.image = Game.instance.assets[THEME_2];
+
+		}
+	});
+	var Theme3 = Class.create(Sprite,{
+		initialize: function(){
+			Sprite.apply(this, [205, 125]);
+			this.image = Game.instance.assets[THEME_3];
+
+		}
+	});
+
 
      // Hero
     var Hero = Class.create(Sprite, {
