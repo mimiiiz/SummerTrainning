@@ -1,7 +1,6 @@
 enchant();
 
-var PIPE = 'images/cactus01.png';
-var PIPE_UPPER = 'images/pipeUpper.png';
+var ENEMY = 'images/cactus01.png';
 var SHIBA = 'images/shiba0.png';
 var BG = 'images/bg11.png';
 var SOUND_BG = 'sounds/comedy.mp3'
@@ -18,8 +17,7 @@ window.onload = function() {
     var game = new Game(700, 400);
     // 4 - Preload resources
     game.preload(
-        PIPE, 
-        PIPE_UPPER,
+        ENEMY, 
         SHIBA,
         BG,
         SOUND_BG,
@@ -41,7 +39,7 @@ window.onload = function() {
     var SceneGame = Class.create(Scene, {
          // The main gameplay scene.     
         initialize: function() {
-            var game, pipeBG, shiba, sound_bg , pipeGroup, sound_lost;
+            var game, EnemyBG, shiba, sound_bg , enemyGroup, sound_lost;
             // var posY = 200, posX = 40, vy = 0, speed = 5, jump = false;
 
             // 1 - Call superclass constructor
@@ -68,7 +66,7 @@ window.onload = function() {
             this.addChild(label);      
 
             // Instance variables
-            this.generatePipeTimer = 0;
+            this.generateEnemyTimer = 0;
 
             // Shiba
             shiba = new Shiba();
@@ -79,7 +77,7 @@ window.onload = function() {
             this.addChild(shiba);
 
             // Update
-            this.addEventListener(Event.ENTER_FRAME, this.update); //update pipe
+            this.addEventListener(Event.ENTER_FRAME, this.update); //update enemy
 
             shiba.x = posX;
     		shiba.y = posY;
@@ -95,10 +93,10 @@ window.onload = function() {
             this.scoreTimer = 0;
             this.score = 0;
 
-            // pipe group
-			pipeGroup = new Group();
-			this.pipeGroup = pipeGroup;
-			this.addChild(pipeGroup);
+            // enemy group
+			enemyGroup = new Group();
+			this.enemyGroup = enemyGroup;
+			this.addChild(enemyGroup);
 
         },
 
@@ -111,12 +109,12 @@ window.onload = function() {
             }
 
             // Check if it's time to create a new set of obstacles
-            this.generatePipeTimer += evt.elapsed * 0.001;
-            if (this.generatePipeTimer >= 4) {
-                var pipe;
-                this.generatePipeTimer -= 4;
-                pipe = new PipeBG(Math.floor(Math.random() * 2  + 1));
-				this.pipeGroup.addChild(pipe);
+            this.generateEnemyTimer += evt.elapsed * 0.001;
+            if (this.generateEnemyTimer >= 4) {
+                var enemy;
+                this.generateEnemyTimer -= 4;
+                enemy = new EnemyBG(Math.floor(Math.random() * 2  + 1));
+				this.enemyGroup.addChild(enemy);
 
             }
 
@@ -153,18 +151,18 @@ window.onload = function() {
             // end JUMPING
 
             // Check collision
-			for (var i = this.pipeGroup.childNodes.length - 1; i >= 0; i--) {
-			    var pipe;
-			    pipe = this.pipeGroup.childNodes[i];
+			for (var i = this.enemyGroup.childNodes.length - 1; i >= 0; i--) {
+			    var enemy;
+			    enemy = this.enemyGroup.childNodes[i];
 
-			    // if (pipe.intersect(this.shiba)){
-			    if (pipe.within(this.shiba, 50)){
+			    // if (enemy.intersect(this.shiba)){
+			    if (enemy.within(this.shiba, 50)){
 			        
 			        // Game over
 			        //stop sound
 					this.sound_bg.stop();
 					this.sound_lost.play(); 
-					this.pipeGroup.removeChild(pipe);
+					this.enemyGroup.removeChild(enemy);
 					game.replaceScene(new SceneGameOver(this.score));        
 					break;
 			    }
@@ -201,20 +199,20 @@ window.onload = function() {
         },     
     });
 
-    // Pipe Lower
-    var PipeBG = Class.create(Sprite, {
-        //create pipe 
+    // enemy Lower
+    var EnemyBG = Class.create(Sprite, {
+        //create enemy 
         initialize: function(rand) {
             // Call superclass constructor
             Sprite.apply(this,[161, 196]);
             // Sprite.apply(this,[161, 196]);
-            this.image  = Game.instance.assets[PIPE];   
+            this.image  = Game.instance.assets[ENEMY];   
             this.scaleX = 0.3;
             this.scaleY = 0.13 + rand * 0.1;   
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
-            this.x = 700; // create pipe begin from right of window
-            this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of pipe begin at edge of window
+            this.x = 700; // create enemy begin from right of window
+            this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
             this.animationDuration = 0;
 
         
