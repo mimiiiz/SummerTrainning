@@ -1,7 +1,7 @@
 enchant();
 
 var ENEMY = 'images/cactus01.png';
-var SHIBA = 'images/shiba0.png';
+var HERO = 'images/shiba0.png';
 var BG = 'images/bg11.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 var SOUND_LOST = 'sounds/lost.mp3'
@@ -18,7 +18,7 @@ window.onload = function() {
     // 4 - Preload resources
     game.preload(
         ENEMY, 
-        SHIBA,
+        HERO,
         BG,
         SOUND_BG,
         SOUND_LOST
@@ -39,7 +39,7 @@ window.onload = function() {
     var SceneGame = Class.create(Scene, {
          // The main gameplay scene.     
         initialize: function() {
-            var game, EnemyBG, shiba, sound_bg , enemyGroup, sound_lost;
+            var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost;
             // var posY = 200, posX = 40, vy = 0, speed = 5, jump = false;
 
             // 1 - Call superclass constructor
@@ -68,22 +68,22 @@ window.onload = function() {
             // Instance variables
             this.generateEnemyTimer = 0;
 
-            // Shiba
-            shiba = new Shiba();
-            // shiba.x = game.width/2 - shiba.width/2;
-            shiba.x = 0;
-            shiba.y = 115;
-            this.shiba = shiba;
-            this.addChild(shiba);
+            // hero
+            hero = new Hero();
+            // hero.x = game.width/2 - hero.width/2;
+            hero.x = 0;
+            hero.y = 115;
+            this.hero = hero;
+            this.addChild(hero);
 
             // Update
             this.addEventListener(Event.ENTER_FRAME, this.update); //update enemy
 
-            shiba.x = posX;
-    		shiba.y = posY;
+            hero.x = posX;
+    		hero.y = posY;
 
     		this.addEventListener("touchstart",function(e){
-	        	if(shiba.y === posY){
+	        	if(hero.y === posY){
 		        	vy = speed; 								//タッチされた際の初速度
 	            	jump = true;
 	            	this.score += 4;								//ジャンプ中フラグを立てる
@@ -127,19 +127,19 @@ window.onload = function() {
             // speed++;
             // speed%=15; 
             if(jump === true){						//ジャンプ中
-            	this.shiba.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
+            	this.hero.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
             	vy-=0.15;							//加速度調整(マイナスもあるよ)
             }else{							//ジャンプ中以外の処理
                 if(game.frame%5 === 0){				//5フレームごとに姿勢を変えよう
-                    if(this.shiba.frame === 1){
-                        this.shiba.frame = 2;
+                    if(this.hero.frame === 1){
+                        this.hero.frame = 2;
                     }else{
-                        this.shiba.frame = 1;
+                        this.hero.frame = 1;
                     }//1フレームと2フレームを交互に
                 }
             }
-            if(this.shiba.y > posY){						//下に落っこちないように
-                this.shiba.y = posY;						//位置調整(加速度によっては食い込むよ)
+            if(this.hero.y > posY){						//下に落っこちないように
+                this.hero.y = posY;						//位置調整(加速度によっては食い込むよ)
                 vy = 0;								//次のジャンプまでは加速度0に
                 jump = false;						//ジャンプフラグも元に戻す
             }
@@ -155,8 +155,8 @@ window.onload = function() {
 			    var enemy;
 			    enemy = this.enemyGroup.childNodes[i];
 
-			    // if (enemy.intersect(this.shiba)){
-			    if (enemy.within(this.shiba, 50)){
+			    // if (enemy.intersect(this.hero)){
+			    if (enemy.within(this.hero, 50)){
 			        
 			        // Game over
 			        //stop sound
@@ -177,13 +177,13 @@ window.onload = function() {
         }
     });
 
-     // Shiba
-    var Shiba = Class.create(Sprite, {
+     // Hero
+    var Hero = Class.create(Sprite, {
         // The player character.     
         initialize: function() {
             // 1 - Call superclass constructor
             Sprite.apply(this,[270, 210]);
-            this.image = Game.instance.assets[SHIBA];
+            this.image = Game.instance.assets[HERO];
             this.scaleX = 0.3;
             this.scaleY = 0.3;
             // 2 - Animate
