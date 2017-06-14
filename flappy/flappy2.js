@@ -10,8 +10,9 @@ var THEME_1 = 'images/1_theme.png';
 var THEME_2 = 'images/2_theme.png';
 var THEME_3 = 'images/3_theme.png';
 
-var posY = 115;						//キャラクタの初期位置縦
-var posX = 0;						//キャラクタの初期位置横
+// var posY = 115;						//キャラクタの初期位置縦
+// var posX = 0;						//キャラクタの初期位置横
+var posY, posX;	
 var vy = 0;							//キャラクタの初速度初期値
 var speed = 5;						//ジャンプ中の初速度
 var jump = false;	
@@ -35,8 +36,8 @@ window.onload = function() {
     game.onload = function() {
         
         game.rootScene.backgroundColor = "#000";
-        // var scene = new SceneGame();
-        var scene = new ThemeSelectScene();
+        var scene = new SceneGame();
+        // var scene = new ThemeSelectScene();
         game.pushScene(scene);
 
     }
@@ -78,16 +79,15 @@ window.onload = function() {
             // hero
             hero = new Hero();
             // hero.x = game.width/2 - hero.width/2;
-            hero.x = 0;
-            hero.y = 115;
+            // hero.x = 0;
+            // hero.y = 115;
             this.hero = hero;
             this.addChild(hero);
 
             // Update
             this.addEventListener(Event.ENTER_FRAME, this.update); //update enemy
 
-            hero.x = posX;
-    		hero.y = posY;
+
 
     		this.addEventListener("touchstart",function(e){
 	        	if(hero.y === posY){
@@ -248,6 +248,10 @@ window.onload = function() {
             this.image = Game.instance.assets[HERO];
             this.scaleX = 0.3;
             this.scaleY = 0.3;
+            this.x = 0;
+    		this.y = 115;
+            posX = this.x;
+    		posY = this.y;
             // 2 - Animate
             this.animationDuration = 0;
             this.addEventListener(Event.ENTER_FRAME, this.updateAnimation);
