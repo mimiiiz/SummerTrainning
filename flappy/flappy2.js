@@ -3,6 +3,7 @@ enchant();
 var ENEMY = 'images/1_cactus.png';
 var HERO = 'images/1_shiba.png';
 var BG = 'images/bg11.png';
+var SELECT_THEME_BG = 'images/selectTheme_bg.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 var SOUND_LOST = 'sounds/lost.mp3'
 var THEME_1 = 'images/1_theme.png';
@@ -23,6 +24,7 @@ window.onload = function() {
         ENEMY, 
         HERO,
         BG,
+        SELECT_THEME_BG,
         SOUND_BG,
         SOUND_LOST,
         THEME_1, THEME_2, THEME_3
@@ -33,8 +35,8 @@ window.onload = function() {
     game.onload = function() {
         
         game.rootScene.backgroundColor = "#000";
-        var scene = new SceneGame();
-        // var scene = new ThemeSelectScene();
+        // var scene = new SceneGame();
+        var scene = new ThemeSelectScene();
         game.pushScene(scene);
 
     }
@@ -186,7 +188,12 @@ window.onload = function() {
 		initialize: function(){
 			var theme_select, theme_1, theme_2, theme_3 ;
 			Scene.apply(this);
-	        this.backgroundColor = '#72c0db';
+		
+	        select_theme_bg = new Sprite(700, 400);
+            select_theme_bg.image = game.assets[SELECT_THEME_BG];
+            this.addChild(select_theme_bg);  
+
+
 
 	        theme_1 = new Theme1();
 	        theme_1.x = 15;
