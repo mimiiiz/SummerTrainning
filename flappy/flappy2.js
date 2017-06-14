@@ -10,8 +10,6 @@ var THEME_1 = 'images/1_theme.png';
 var THEME_2 = 'images/2_theme.png';
 var THEME_3 = 'images/3_theme.png';
 
-// var posY = 115;						//キャラクタの初期位置縦
-// var posX = 0;						//キャラクタの初期位置横
 var posY, posX;	
 var vy = 0;							//キャラクタの初速度初期値
 var speed = 5;						//ジャンプ中の初速度
@@ -48,17 +46,14 @@ window.onload = function() {
          // The main gameplay scene.     
         initialize: function() {
             var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost;
-            // var posY = 200, posX = 40, vy = 0, speed = 5, jump = false;
 
-            // 1 - Call superclass constructor
             Scene.apply(this);
-            // 2 - Access to the game singleton instance
+
             game = Game.instance;
             this.sound_bg = game.assets[SOUND_BG];
             this.sound_lost = game.assets[SOUND_LOST];
             this.sound_bg.play();
-            // 3 - Create child nodes
-            // Label
+
             label = new Label('SCORE<br>0');
             label.x = 30;
             label.y = 30;        
@@ -68,27 +63,19 @@ window.onload = function() {
 
             bg = new Sprite(950, 400);
             bg.image = game.assets[BG];
-            // bg.x = 950
-            // 4 - Add child nodes        
+
             this.addChild(bg);  
             this.addChild(label);      
 
-            // Instance variables
             this.generateEnemyTimer = 0;
 
             // hero
             hero = new Hero();
-            // hero.x = game.width/2 - hero.width/2;
-            // hero.x = 0;
-            // hero.y = 115;
             this.hero = hero;
             this.addChild(hero);
 
             // Update
             this.addEventListener(Event.ENTER_FRAME, this.update); //update enemy
-
-
-
     		this.addEventListener("touchstart",function(e){
 	        	if(hero.y === posY){
 		        	vy = speed; 								//タッチされた際の初速度
@@ -130,9 +117,7 @@ window.onload = function() {
                 this.sound_bg.play();
             }
 
-            //  JUMPING  //
-            // speed++;
-            // speed%=15; 
+            //  JUMPING   speed++;  speed%=15; 
             if(jump === true){						//ジャンプ中
             	this.hero.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
             	vy-=0.15;							//加速度調整(マイナスもあるよ)
@@ -165,8 +150,7 @@ window.onload = function() {
 			    // if (enemy.intersect(this.hero)){
 			    if (enemy.within(this.hero, 50)){
 			        
-			        // Game over
-			        //stop sound
+			        // Game over stop sound
 					this.sound_bg.stop();
 					this.sound_lost.play(); 
 					this.enemyGroup.removeChild(enemy);
@@ -193,8 +177,6 @@ window.onload = function() {
             select_theme_bg.image = game.assets[SELECT_THEME_BG];
             this.addChild(select_theme_bg);  
 
-
-
 	        theme_1 = new Theme1();
 	        theme_1.x = 15;
 	        theme_1.y = 150;
@@ -210,8 +192,6 @@ window.onload = function() {
 	        this.addChild(theme_1);
 	        this.addChild(theme_2);
 	        this.addChild(theme_3);
-
-
 		}
 
 	});
@@ -280,7 +260,6 @@ window.onload = function() {
             this.x = 700; // create enemy begin from right of window
             this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
             this.animationDuration = 0;
-
         
         },
         update: function(evt) { 
