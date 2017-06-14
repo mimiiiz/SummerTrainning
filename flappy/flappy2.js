@@ -1,8 +1,18 @@
 enchant();
 
-var ENEMY = 'images/1_cactus.png';
-var HERO = 'images/1_shiba.png';
+// var ENEMY, HERO, BG;
+var ENEMY = 'images/1_cactus.png'; 
+var HERO = 'images/1_shiba.png'; 
 var BG = 'images/bg11.png';
+
+var ENEMY2 = 'images/2_tree.png'; 
+var HERO2 = 'images/2_deer.png'; 
+var BG2 = 'images/2_bg.png';
+
+var ENEMY3 = 'images/3_fence.png'; 
+var HERO3 = 'images/3_sheep.png'; 
+var BG3 = 'images/3_bg.png';
+
 var SELECT_THEME_BG = 'images/selectTheme_bg.png';
 var SOUND_BG = 'sounds/comedy.mp3'
 var SOUND_LOST = 'sounds/lost.mp3'
@@ -14,6 +24,7 @@ var posY, posX;
 var vy = 0;							//キャラクタの初速度初期値
 var speed = 5;						//ジャンプ中の初速度
 var jump = false;	
+var bg = new Sprite(950, 400);
 
 window.onload = function() {
 
@@ -23,6 +34,12 @@ window.onload = function() {
         ENEMY, 
         HERO,
         BG,
+        ENEMY2, 
+        HERO2,
+        BG2,
+        ENEMY3, 
+        HERO3,
+        BG3,
         SELECT_THEME_BG,
         SOUND_BG,
         SOUND_LOST,
@@ -34,8 +51,7 @@ window.onload = function() {
     game.onload = function() {
         
         game.rootScene.backgroundColor = "#000";
-        var scene = new SceneGame();
-        // var scene = new ThemeSelectScene();
+        var scene = new ThemeSelectScene();
         game.pushScene(scene);
 
     }
@@ -61,10 +77,8 @@ window.onload = function() {
             label.font = '16px strong';
             this.scoreLabel = label;
 
-            bg = new Sprite(950, 400);
-            bg.image = game.assets[BG];
-
-            this.addChild(bg);  
+	        this.addChild(bg);
+  
             this.addChild(label);      
 
             this.generateEnemyTimer = 0;
@@ -200,6 +214,11 @@ window.onload = function() {
 		initialize: function(){
 			Sprite.apply(this, [205, 125]);
 			this.image = Game.instance.assets[THEME_1];
+			this.addEventListener("touchstart",function(e){
+				currentTheme = 1;
+	            bg.image = game.assets[BG];
+				game.replaceScene(new SceneGame());
+	        });
 
 		}
 	});
@@ -207,6 +226,11 @@ window.onload = function() {
 		initialize: function(){
 			Sprite.apply(this, [205, 125]);
 			this.image = Game.instance.assets[THEME_2];
+			this.addEventListener("touchstart",function(e){
+				currentTheme = 2;
+	            bg.image = game.assets[BG2];
+				game.replaceScene(new SceneGame());
+	        });
 
 		}
 	});
@@ -214,6 +238,11 @@ window.onload = function() {
 		initialize: function(){
 			Sprite.apply(this, [205, 125]);
 			this.image = Game.instance.assets[THEME_3];
+			this.addEventListener("touchstart",function(e){
+				currentTheme = 3;
+	            bg.image = game.assets[BG3];
+				game.replaceScene(new SceneGame());
+	        });
 
 		}
 	});
@@ -224,12 +253,23 @@ window.onload = function() {
         // The player character.     
         initialize: function() {
             // 1 - Call superclass constructor
-            Sprite.apply(this,[270, 210]);
-            this.image = Game.instance.assets[HERO];
-            this.scaleX = 0.3;
-            this.scaleY = 0.3;
-            this.x = 0;
-    		this.y = 115;
+            
+            if(currentTheme == 1){
+            	Sprite.apply(this,[270, 210]);
+            	this.image = Game.instance.assets[HERO];
+            } else if(currentTheme == 2){
+            	Sprite.apply(this,[255, 240]);
+            	this.image = Game.instance.assets[HERO2];
+            } else if(currentTheme == 3){
+            	Sprite.apply(this,[222, 210]);
+            	this.image = Game.instance.assets[HERO3];
+            }
+
+        	this.scaleX = 0.3;
+        	this.scaleY = 0.3;
+        	this.x = 0;
+			this.y = 115;
+           
             posX = this.x;
     		posY = this.y;
             // 2 - Animate
