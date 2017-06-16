@@ -354,7 +354,7 @@ window.onload = function() {
 	    },
 	    touchToRestart: function(evt) {
 		    var game = Game.instance;
-		    game.replaceScene(new SceneGame());
+		    game.replaceScene(new ThemeSelectScene());
 		}
 	});
 };
