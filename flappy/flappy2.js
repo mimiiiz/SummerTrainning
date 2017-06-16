@@ -3,7 +3,7 @@ enchant();
 // var ENEMY, HERO, BG;
 var ENEMY = 'images/1_cactus.png'; 
 var HERO = 'images/1_shiba.png'; 
-var BG = 'images/bg11.png';
+var BG = 'images/1_bg.png';
 
 var ENEMY2 = 'images/2_tree.png'; 
 var HERO2 = 'images/2_deer.png'; 
