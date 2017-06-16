@@ -261,7 +261,7 @@ window.onload = function() {
             	Sprite.apply(this,[255, 240]);
             	this.image = Game.instance.assets[HERO2];
             } else if(currentTheme == 3){
-            	Sprite.apply(this,[222, 210]);
+            	Sprite.apply(this,[221.5, 210]);
             	this.image = Game.instance.assets[HERO3];
             }
 
