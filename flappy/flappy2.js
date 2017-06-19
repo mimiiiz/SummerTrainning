@@ -1,16 +1,16 @@
 enchant();
 
 // var ENEMY, HERO, BG;
-var ENEMY = 'images/1_cactus.png'; 
-var HERO = 'images/1_shiba.png'; 
+var ENEMY = 'images/1_cactus.png';
+var HERO = 'images/1_shiba.png';
 var BG = 'images/1_bg.png';
 
-var ENEMY2 = 'images/2_tree.png'; 
-var HERO2 = 'images/2_deer.png'; 
+var ENEMY2 = 'images/2_tree.png';
+var HERO2 = 'images/2_deer.png';
 var BG2 = 'images/2_bg.png';
 
-var ENEMY3 = 'images/3_fence.png'; 
-var HERO3 = 'images/3_sheep.png'; 
+var ENEMY3 = 'images/3_fence.png';
+var HERO3 = 'images/3_sheep.png';
 var BG3 = 'images/3_bg.png';
 
 var SELECT_THEME_BG = 'images/selectTheme_bg.png';
@@ -20,10 +20,10 @@ var THEME_1 = 'images/1_theme.png';
 var THEME_2 = 'images/2_theme.png';
 var THEME_3 = 'images/3_theme.png';
 
-var posY, posX;	
+var posY, posX;
 var vy = 0;							//キャラクタの初速度初期値
 var speed = 5;						//ジャンプ中の初速度
-var jump = false;	
+var jump = false;
 var bg = new Sprite(950, 400);
 var scanner = null;
 
@@ -33,13 +33,13 @@ window.onload = function() {
 
     // 4 - Preload resources
     game.preload(
-        ENEMY, 
+        ENEMY,
         HERO,
         BG,
-        ENEMY2, 
+        ENEMY2,
         HERO2,
         BG2,
-        ENEMY3, 
+        ENEMY3,
         HERO3,
         BG3,
         SELECT_THEME_BG,
@@ -52,7 +52,7 @@ window.onload = function() {
 
     scanner = new SpriteScanner(game);
     // scanner.scanSE = 1; // sound scanning ; 1 = sound on , 0 = sound off
-    // scanner.selectSE = 1; // sound selected 
+    // scanner.selectSE = 1; // sound selected
     scanner.firstWait = 2; //delay of scanning
     scanner.scanInterval = 1.0;
     scanner.selectWait = 1.0;
@@ -63,17 +63,17 @@ window.onload = function() {
     scanner.focusColor = '#ff0000';
 
     game.onload = function() {
-        
+
         game.rootScene.backgroundColor = "#000";
         var scene = new ThemeSelectScene();
         game.pushScene(scene);
 
     }
-    
-    game.start();   
+
+    game.start();
 
     var SceneGame = Class.create(Scene, {
-         // The main gameplay scene.     
+         // The main gameplay scene.
         initialize: function() {
             var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost;
 
@@ -86,14 +86,14 @@ window.onload = function() {
 
             label = new Label('SCORE<br>0');
             label.x = 30;
-            label.y = 30;        
+            label.y = 30;
             label.color = 'black';
             label.font = '16px strong';
             this.scoreLabel = label;
 
 	        this.addChild(bg);
-  
-            this.addChild(label);      
+
+            this.addChild(label);
 
             this.generateEnemyTimer = 0;
 
@@ -145,7 +145,7 @@ window.onload = function() {
                 this.sound_bg.play();
             }
 
-            //  JUMPING   speed++;  speed%=15; 
+            //  JUMPING   speed++;  speed%=15;
             if(jump === true){						//ジャンプ中
             	this.hero.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
             	vy-=0.15;							//加速度調整(マイナスもあるよ)
@@ -167,7 +167,7 @@ window.onload = function() {
      //        if(game.frame%950 ===0){
  				// bg.x -= 950;							//背景を右にずらす（ループさせる）
      //        }
-     //        bg.x++		
+     //        bg.x++
             // end JUMPING
 
             // Check collision
@@ -177,12 +177,12 @@ window.onload = function() {
 
 			    // if (enemy.intersect(this.hero)){
 			    if (enemy.within(this.hero, 50)){
-			        
+
 			        // Game over stop sound
 					this.sound_bg.stop();
-					this.sound_lost.play(); 
+					this.sound_lost.play();
 					this.enemyGroup.removeChild(enemy);
-					game.replaceScene(new SceneGameOver(this.score));        
+					game.replaceScene(new SceneGameOver(this.score));
 					break;
 			    }
 			    // Score increase as time passes
@@ -192,7 +192,7 @@ window.onload = function() {
         setScore: function (value) {
             this.score = value;
             this.scoreLabel.text = 'SCORE<br>' + this.score;
-                
+
         }
     });
 
@@ -200,10 +200,10 @@ window.onload = function() {
 		initialize: function(){
 			var theme_select, theme_1, theme_2, theme_3 ;
 			Scene.apply(this);
-		
+
 	        select_theme_bg = new Sprite(700, 400);
             select_theme_bg.image = game.assets[SELECT_THEME_BG];
-            this.addChild(select_theme_bg);  
+            this.addChild(select_theme_bg);
 
 	        theme_1 = new Theme1();
 	        theme_1.x = 15;
@@ -223,6 +223,7 @@ window.onload = function() {
 
 	        scanner.addScanTargets([theme_1, theme_2, theme_3]);
 	        this.addChild(scanner);
+            scanner.scanStart();
 		}
 
 	});
@@ -267,10 +268,10 @@ window.onload = function() {
 
      // Hero
     var Hero = Class.create(Sprite, {
-        // The player character.     
+        // The player character.
         initialize: function() {
             // 1 - Call superclass constructor
-            
+
             if(currentTheme == 1){
             	Sprite.apply(this,[270, 210]);
             	this.image = Game.instance.assets[HERO];
@@ -286,31 +287,31 @@ window.onload = function() {
         	this.scaleY = 0.3;
         	this.x = 0;
 			this.y = 115;
-           
+
             posX = this.x;
     		posY = this.y;
             // 2 - Animate
             this.animationDuration = 0;
             this.addEventListener(Event.ENTER_FRAME, this.updateAnimation);
         },
-        updateAnimation: function (evt) {        
-            this.animationDuration += evt.elapsed * 0.001;       
+        updateAnimation: function (evt) {
+            this.animationDuration += evt.elapsed * 0.001;
             if (this.animationDuration >= 0.25) {
                 this.frame = (this.frame + 1) % 2;  //frame1 = up , frame2 = down
                 this.animationDuration -= 0.25;
             }
-        },     
+        },
     });
 
     // enemy Lower
     var EnemyBG = Class.create(Sprite, {
-        //create enemy 
+        //create enemy
         initialize: function(rand) {
             // Call superclass constructor
-           
+
             if(currentTheme == 1){
             	Sprite.apply(this,[161, 196]);
-            	this.image  = Game.instance.assets[ENEMY]; 
+            	this.image  = Game.instance.assets[ENEMY];
             } else if(currentTheme == 2){
             	Sprite.apply(this,[150, 196]);
             	this.image = Game.instance.assets[ENEMY2];
@@ -318,37 +319,37 @@ window.onload = function() {
             	Sprite.apply(this,[196, 196]);
             	this.image = Game.instance.assets[ENEMY3];
             }
-              
+
             this.scaleX = 0.3;
-            this.scaleY = 0.13 + rand * 0.1;   
+            this.scaleY = 0.13 + rand * 0.1;
             this.rotationSpeed = 0;
             this.addEventListener(Event.ENTER_FRAME, this.update);
             this.x = 700; // create enemy begin from right of window
             this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
             this.animationDuration = 0;
-        
+
         },
-        update: function(evt) { 
+        update: function(evt) {
             var xSpeed, game;
 
             game = Game.instance;
             xSpeed = 200;
-            
+
             this.x -= xSpeed * evt.elapsed * 0.001;
-            this.rotation += this.rotationSpeed * evt.elapsed * 0.001;           
+            this.rotation += this.rotationSpeed * evt.elapsed * 0.001;
             if (this.x > game.width) {
                 this.parentNode.removeChild(this);  // remove when it  beyond the bottom of the screen
             }
 
-            this.animationDuration += evt.elapsed * 0.001;       
+            this.animationDuration += evt.elapsed * 0.001;
             if (this.animationDuration >= 0.25) {
                 this.frame = (this.frame + 1) % 2;  //frame1 = up , frame2 = down
                 this.animationDuration -= 0.25;
-            }	
+            }
         }
     });
 
-	// SceneGameOver  
+	// SceneGameOver
 	var SceneGameOver = Class.create(Scene, {
 	    initialize: function(score) {
 	        var gameOverLabel, scoreLabel;
@@ -365,10 +366,10 @@ window.onload = function() {
 			// Score label
 			scoreLabel = new Label('SCORE<br>' + score);
 			scoreLabel.x = 205;
-			scoreLabel.y = 182;        
+			scoreLabel.y = 182;
 			scoreLabel.color = 'white';
 			scoreLabel.font = '16px strong';
-			scoreLabel.textAlign = 'center';  
+			scoreLabel.textAlign = 'center';
 
 			// Add labels
 			this.addChild(gameOverLabel);
@@ -376,7 +377,7 @@ window.onload = function() {
 
 			// Listen for taps
 			this.addEventListener(Event.TOUCH_START, this.touchToRestart);
-			
+
 	    },
 	    touchToRestart: function(evt) {
 		    var game = Game.instance;
