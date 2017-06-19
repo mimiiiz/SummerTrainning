@@ -1,0 +1,14 @@
+{
+  "name": "flappy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "flappy.js",
+  "scripts": {
+    "start": "http-server -o"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.10.0"
+  }
+}
