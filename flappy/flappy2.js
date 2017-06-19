@@ -232,7 +232,7 @@ window.onload = function() {
 		initialize: function(){
 			Sprite.apply(this, [205, 125]);
 			this.image = Game.instance.assets[THEME_1];
-			this.addEventListener("touchstart",function(e){
+			this.addEventListener("scanselect",function(e){
 				currentTheme = 1;
 	            bg.image = game.assets[BG];
 				game.replaceScene(new SceneGame());
@@ -244,7 +244,7 @@ window.onload = function() {
 		initialize: function(){
 			Sprite.apply(this, [205, 125]);
 			this.image = Game.instance.assets[THEME_2];
-			this.addEventListener("touchstart",function(e){
+			this.addEventListener("scanselect",function(e){
 				currentTheme = 2;
 	            bg.image = game.assets[BG2];
 				game.replaceScene(new SceneGame());
@@ -256,7 +256,7 @@ window.onload = function() {
 		initialize: function(){
 			Sprite.apply(this, [205, 125]);
 			this.image = Game.instance.assets[THEME_3];
-			this.addEventListener("touchstart",function(e){
+			this.addEventListener("scanselect",function(e){
 				currentTheme = 3;
 	            bg.image = game.assets[BG3];
 				game.replaceScene(new SceneGame());
