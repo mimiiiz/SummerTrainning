@@ -290,9 +290,18 @@ window.onload = function() {
         //create enemy 
         initialize: function(rand) {
             // Call superclass constructor
-            Sprite.apply(this,[161, 196]);
-            // Sprite.apply(this,[161, 196]);
-            this.image  = Game.instance.assets[ENEMY];   
+           
+            if(currentTheme == 1){
+            	Sprite.apply(this,[161, 196]);
+            	this.image  = Game.instance.assets[ENEMY]; 
+            } else if(currentTheme == 2){
+            	Sprite.apply(this,[150, 196]);
+            	this.image = Game.instance.assets[ENEMY2];
+            } else if(currentTheme == 3){
+            	Sprite.apply(this,[196, 196]);
+            	this.image = Game.instance.assets[ENEMY3];
+            }
+              
             this.scaleX = 0.3;
             this.scaleY = 0.13 + rand * 0.1;   
             this.rotationSpeed = 0;
