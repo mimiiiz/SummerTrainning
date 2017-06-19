@@ -30,6 +30,13 @@ var scanner = null;
 window.onload = function() {
 
     var game = new Game(700, 400);
+    var settings = Settings.create();
+
+    var btn = document.getElementById('open_settings')
+    btn.addEventListener('click', function(event) {
+    	event.stopPropagation();
+        settings.open()
+    })
 
     // 4 - Preload resources
     game.preload(
