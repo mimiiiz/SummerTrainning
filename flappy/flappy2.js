@@ -25,10 +25,12 @@ var vy = 0;							//キャラクタの初速度初期値
 var speed = 5;						//ジャンプ中の初速度
 var jump = false;	
 var bg = new Sprite(950, 400);
+var scanner = null;
 
 window.onload = function() {
 
     var game = new Game(700, 400);
+
     // 4 - Preload resources
     game.preload(
         ENEMY, 
@@ -47,6 +49,18 @@ window.onload = function() {
         );
 
     game.fps = 32;
+
+    scanner = new SpriteScanner(game);
+    // scanner.scanSE = 1; // sound scanning ; 1 = sound on , 0 = sound off
+    // scanner.selectSE = 1; // sound selected 
+    scanner.firstWait = 2; //delay of scanning
+    scanner.scanInterval = 1.0;
+    scanner.selectWait = 1.0;
+    scanner.frameWidth = 10;
+    scanner.selectFrameWidth = 15;
+    scanner.scanRepeat = -1; //infinite loop
+    scanner.focusType = 'frame'; //frame or background
+    scanner.focusColor = '#ff0000';
 
     game.onload = function() {
         
@@ -206,6 +220,9 @@ window.onload = function() {
 	        this.addChild(theme_1);
 	        this.addChild(theme_2);
 	        this.addChild(theme_3);
+
+	        scanner.addScanTargets([theme_1, theme_2, theme_3]);
+	        this.addChild(scanner);
 		}
 
 	});
