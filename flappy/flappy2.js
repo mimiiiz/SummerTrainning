@@ -37,7 +37,13 @@ window.onload = function() {
     var btn = document.getElementById('open_settings')
     btn.addEventListener('click', function(event) {
     	event.stopPropagation();
-        settings.open()
+    	game.pause();
+        settings.open();
+    })
+
+
+    settings.on('close', function(){
+    	game.resume();
     })
 
     var sizeHero = settings.addRadio({

@@ -73,6 +73,11 @@ var SpriteScanner = enchant.Class.create(enchant.Sprite, {
         this.touchEnabled = false; // htmlのクリックイベントとspriteのタッチイベントが重複するのでspriteのタッチイベントはOFFにしておく
         var _touch = ('ontouchstart' in document) ? 'touchstart' : 'click';
         $('html').on(_touch, function(e){
+            if (!obj.game.ready) {
+                return;
+            }
+
+
             if($(e.target).hasClass("touchable")) {
                 // touchableクラスの要素がタッチされたときはタッチイベントを発火しない
             } else {
