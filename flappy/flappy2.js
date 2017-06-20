@@ -27,7 +27,7 @@ var jump = false;
 var bg = new Sprite(950, 400);
 var scanner = null;
 
-var scaleHero;
+var scaleHero, scaleEnemy;
 
 window.onload = function() {
 
@@ -64,6 +64,34 @@ window.onload = function() {
 
 		    console.log('selected = ' + scaleHero);
 		})
+
+
+    var sizeEnemy = settings.addRadio({
+        title: 'Size of enemy',
+        key: 'sizeEnemy',
+        description: 'change size of game\'s enemy character',
+        choices: ['small', 'medium', 'large'],
+        defaultValue: 'medium'
+    })
+    sizeEnemy.on('settingsChange', function(event) {
+        switch (event.value) {
+        	case 'small':
+        		scaleEnemy = "small";
+		        break;
+		    case 'medium':
+		        scaleEnemy = "medium";
+		        break;
+		    case 'large':
+		        scaleEnemy = "large";
+		        break;
+		    default: 
+        		scaleEnemy = "medium";
+		    }
+
+		    console.log('selected = ' + scaleEnemy);
+		})
+
+
 
     // 4 - Preload resources
     game.preload(
@@ -371,13 +399,33 @@ window.onload = function() {
             	this.image = Game.instance.assets[ENEMY3];
             }
 
-            this.scaleX = 0.3;
-            this.scaleY = 0.13 + rand * 0.1;
+            if (scaleEnemy == 'small') {
+            	this.scaleX = 0.3;
+            	this.scaleY = 0.15 + rand * 0.1;
+            	this.x = 700; // create enemy begin from right of window
+            	this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
+            
+
+            }else if (scaleEnemy == 'large') {
+            	this.scaleX = 0.45;
+            	this.scaleY = 0.45 + rand * 0.1;
+            	this.x = 700; // create enemy begin from right of window
+            	this.y = (330-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
+            
+
+            }else {
+            	this.scaleX = 0.3;
+            	this.scaleY = 0.13 + rand * 0.1;
+            	this.x = 700; // create enemy begin from right of window
+            	this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
+            
+            }
+            console.log("scaleEnemy = " + scaleEnemy);
+        	
+
             this.rotationSpeed = 0;
-            this.addEventListener(Event.ENTER_FRAME, this.update);
-            this.x = 700; // create enemy begin from right of window
-            this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
             this.animationDuration = 0;
+            this.addEventListener(Event.ENTER_FRAME, this.update);
 
         },
         update: function(evt) {
