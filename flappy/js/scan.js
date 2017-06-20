@@ -77,7 +77,6 @@ var SpriteScanner = enchant.Class.create(enchant.Sprite, {
                 return;
             }
 
-
             if($(e.target).hasClass("touchable")) {
                 // touchableクラスの要素がタッチされたときはタッチイベントを発火しない
             } else {
