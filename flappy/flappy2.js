@@ -27,7 +27,7 @@ var jump = false;
 var bg = new Sprite(950, 400);
 var scanner = null;
 
-var scaleHero, scaleEnemy, speedEnemy;
+var scaleHero = 'medium', scaleEnemy = 'medium', speedEnemy = 3, soundControl = 'on';
 
 window.onload = function() {
 
@@ -52,7 +52,6 @@ window.onload = function() {
 		console.log('selected scaleHero = ' + scaleHero);
 		})
 
-
     var sizeEnemy = settings.addRadio({
         title: 'Size of enemy',
         key: 'sizeEnemy',
@@ -76,8 +75,19 @@ window.onload = function() {
     speed1.on('settingsChange', function(event) {
         speedEnemy = event.value;
         console.log('selected speedEnemy = ' + speedEnemy);
-
     })
+
+	var soundOption = settings.addRadio({
+        title: 'Sound',
+        key: 'soundControl',
+        description: 'Turn on/off sound',
+        choices: ['on', 'off'],
+        defaultValue: 'on'
+    })
+    soundOption.on('settingsChange', function(event) {
+        soundControl = event.value;
+		console.log('selected soundControl = ' + soundControl);
+		})
 
 
 
@@ -134,6 +144,14 @@ window.onload = function() {
             this.sound_lost = game.assets[SOUND_LOST];
             this.sound_bg.play();
 
+            if (soundControl == 'on') {
+            	this.sound_bg.play();
+            } else if(soundControl == 'off'){
+            	this.sound_bg.stop();
+            }
+
+
+            
             label = new Label('SCORE<br>0');
             label.x = 30;
             label.y = 30;
@@ -227,10 +245,13 @@ window.onload = function() {
 
 			    // if (enemy.intersect(this.hero)){
 			    if (enemy.within(this.hero, 50)){
+					console.log('soundControl = ' + soundControl);
 
 			        // Game over stop sound
-					this.sound_bg.stop();
-					this.sound_lost.play();
+			        if (soundControl == 'on') {
+						this.sound_bg.stop();
+						this.sound_lost.play();
+					}
 					this.enemyGroup.removeChild(enemy);
 					game.replaceScene(new SceneGameOver(this.score));
 					break;
