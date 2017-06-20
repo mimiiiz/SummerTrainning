@@ -27,6 +27,8 @@ var jump = false;
 var bg = new Sprite(950, 400);
 var scanner = null;
 
+var scaleHero;
+
 window.onload = function() {
 
     var game = new Game(700, 400);
@@ -37,6 +39,31 @@ window.onload = function() {
     	event.stopPropagation();
         settings.open()
     })
+
+    var sizeHero = settings.addRadio({
+        title: 'Size of character',
+        key: 'sizeHero',
+        description: 'change size of game\'s character',
+        choices: ['small', 'medium', 'large'],
+        defaultValue: 'medium'
+    })
+    sizeHero.on('settingsChange', function(event) {
+        switch (event.value) {
+        	case 'small':
+        		scaleHero = "small";
+		        break;
+		    case 'medium':
+		        scaleHero = "medium";
+		        break;
+		    case 'large':
+		        scaleHero = "large";
+		        break;
+		    default: 
+        		scaleHero = "medium";
+		    }
+
+		    console.log('selected = ' + scaleHero);
+		})
 
     // 4 - Preload resources
     game.preload(
@@ -290,10 +317,27 @@ window.onload = function() {
             	this.image = Game.instance.assets[HERO3];
             }
 
-        	this.scaleX = 0.3;
-        	this.scaleY = 0.3;
-        	this.x = 0;
-			this.y = 115;
+            console.log("scaleHero = " + scaleHero);
+
+            if (scaleHero == 'small') {
+            	this.scaleX = 0.15;
+        		this.scaleY = 0.15;
+        		this.x = 0;
+				this.y = 130;
+
+            }else if (scaleHero == 'large') {
+            	this.scaleX = 0.45;
+        		this.scaleY = 0.45;
+        		this.x = 0;
+				this.y = 105;
+
+            }else {
+            	this.scaleX = 0.3;
+        		this.scaleY = 0.3;
+        		this.x = 0;
+				this.y = 115;
+            }
+        	
 
             posX = this.x;
     		posY = this.y;
