@@ -27,7 +27,7 @@ var jump = false;
 var bg = new Sprite(950, 400);
 var scanner = null;
 
-var scaleHero, scaleEnemy;
+var scaleHero, scaleEnemy, speedEnemy;
 
 window.onload = function() {
 
@@ -48,21 +48,8 @@ window.onload = function() {
         defaultValue: 'medium'
     })
     sizeHero.on('settingsChange', function(event) {
-        switch (event.value) {
-        	case 'small':
-        		scaleHero = "small";
-		        break;
-		    case 'medium':
-		        scaleHero = "medium";
-		        break;
-		    case 'large':
-		        scaleHero = "large";
-		        break;
-		    default: 
-        		scaleHero = "medium";
-		    }
-
-		    console.log('selected = ' + scaleHero);
+        scaleHero = event.value;
+		console.log('selected scaleHero = ' + scaleHero);
 		})
 
 
@@ -74,22 +61,23 @@ window.onload = function() {
         defaultValue: 'medium'
     })
     sizeEnemy.on('settingsChange', function(event) {
-        switch (event.value) {
-        	case 'small':
-        		scaleEnemy = "small";
-		        break;
-		    case 'medium':
-		        scaleEnemy = "medium";
-		        break;
-		    case 'large':
-		        scaleEnemy = "large";
-		        break;
-		    default: 
-        		scaleEnemy = "medium";
-		    }
-
-		    console.log('selected = ' + scaleEnemy);
+        scaleEnemy = event.value;
+        console.log('selected scaleEnemy = ' + scaleEnemy);
 		})
+
+    var speed1 = settings.addCounter({
+        title: 'speed',
+        key: 'speedEnemy',
+        description: 'change speed of enemy character',
+        min: 1,
+        max: 5,
+        defaultValue: 3
+    })
+    speed1.on('settingsChange', function(event) {
+        speedEnemy = event.value;
+        console.log('selected speedEnemy = ' + speedEnemy);
+
+    })
 
 
 
@@ -421,7 +409,6 @@ window.onload = function() {
             
             }
             console.log("scaleEnemy = " + scaleEnemy);
-        	
 
             this.rotationSpeed = 0;
             this.animationDuration = 0;
@@ -432,7 +419,20 @@ window.onload = function() {
             var xSpeed, game;
 
             game = Game.instance;
-            xSpeed = 200;
+
+            if (speedEnemy == 1) {
+            	xSpeed = 70;
+            } else if (speedEnemy == 2) {
+            	xSpeed = 100;
+            } else if (speedEnemy == 4) {
+            	xSpeed = 270;
+            } else if (speedEnemy == 5) {
+            	xSpeed = 320;
+            } else {
+            	xSpeed = 200;
+            }
+            console.log("speedEnemy = " + xSpeed);
+
 
             this.x -= xSpeed * evt.elapsed * 0.001;
             this.rotation += this.rotationSpeed * evt.elapsed * 0.001;
