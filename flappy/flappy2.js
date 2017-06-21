@@ -170,6 +170,13 @@ window.onload = function() {
 
             this.addChild(label);
 
+            labelHigh = new Label('HIGH SCORE<br>               ' + highScore );
+            labelHigh.x = 570;
+            labelHigh.y = 30;
+            labelHigh.color = 'black';
+            labelHigh.font = '16px strong';
+            this.addChild(labelHigh);
+
             this.generateEnemyTimer = 0;
 
             // hero
