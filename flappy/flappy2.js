@@ -158,8 +158,6 @@ window.onload = function() {
             	this.sound_bg.stop();
             }
 
-
-            
             label = new Label('SCORE<br>0');
             label.x = 30;
             label.y = 30;
@@ -198,6 +196,7 @@ window.onload = function() {
 
         },
 
+        
         update: function(evt) {
 
             this.scoreTimer += evt.elapsed * 0.001;
@@ -348,9 +347,11 @@ window.onload = function() {
 
      // Hero
     var Hero = Class.create(Sprite, {
+
         // The player character.
         initialize: function() {
             // 1 - Call superclass constructor
+        console.log("new Hero");
 
             if(currentTheme == 1){
             	Sprite.apply(this,[270, 210]);
@@ -366,13 +367,10 @@ window.onload = function() {
             console.log("scaleHero = " + scaleHero);
 
             if (scaleHero == 'small') {
-            	this.scaleX = 0.15;
-        		this.scaleY = 0.15;
             	this.scaleX = 0.25;
         		this.scaleY = 0.25;
         		this.x = 0;
-				this.y = 130;
-				this.y = 125;
+				this.y = 120;
 
             }else if (scaleHero == 'large') {
             	this.scaleX = 0.45;
@@ -394,6 +392,13 @@ window.onload = function() {
             this.animationDuration = 0;
             this.addEventListener(Event.ENTER_FRAME, this.updateAnimation);
         },
+        // regenerateHero: function(){
+        // 	console.log("regenerateHero");
+        // 	this.game.removeChild(hero);
+        // 	hero = new Hero();
+        // 	this.game.addChild(hero);
+        // },
+
         updateAnimation: function (evt) {
             this.animationDuration += evt.elapsed * 0.001;
             if (this.animationDuration >= 0.25) {
@@ -431,7 +436,7 @@ window.onload = function() {
             	this.scaleX = 0.45;
             	this.scaleY = 0.45 + rand * 0.1;
             	this.x = 700; // create enemy begin from right of window
-            	this.y = (330-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
+            	this.y = ((327-(this.height*this.scaleY)/2) - 343/2)+6; //the bottom of enemy begin at edge of window
             
 
             }else {
