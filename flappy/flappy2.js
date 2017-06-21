@@ -28,6 +28,7 @@ var bg = new Sprite(950, 400);
 var scanner = null;
 
 var scaleHero = 'medium', scaleEnemy = 'medium', speedEnemy = 3, soundControl = 'on';
+var currentTheme ,currentScene;
 
 window.onload = function() {
 
@@ -141,6 +142,7 @@ window.onload = function() {
     var SceneGame = Class.create(Scene, {
          // The main gameplay scene.
         initialize: function() {
+			currentScene = 'SceneGame';
             var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost;
 
             Scene.apply(this);
@@ -275,6 +277,7 @@ window.onload = function() {
 
 	var ThemeSelectScene = Class.create(Scene, {
 		initialize: function(){
+			currentScene = 'ThemeSelectScene';
 			var theme_select, theme_1, theme_2, theme_3 ;
 			Scene.apply(this);
 
@@ -365,8 +368,11 @@ window.onload = function() {
             if (scaleHero == 'small') {
             	this.scaleX = 0.15;
         		this.scaleY = 0.15;
+            	this.scaleX = 0.25;
+        		this.scaleY = 0.25;
         		this.x = 0;
 				this.y = 130;
+				this.y = 125;
 
             }else if (scaleHero == 'large') {
             	this.scaleX = 0.45;
@@ -478,6 +484,7 @@ window.onload = function() {
 	// SceneGameOver
 	var SceneGameOver = Class.create(Scene, {
 	    initialize: function(score) {
+			currentScene = 'SceneGameOver';
 	        var gameOverLabel, scoreLabel;
 	        Scene.apply(this);
 	        this.backgroundColor = 'black';
