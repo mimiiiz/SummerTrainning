@@ -29,6 +29,7 @@ var scanner = null;
 
 var scaleHero = 'medium', scaleEnemy = 'medium', speedEnemy = 3, soundControl = 'on';
 var currentTheme ,currentScene;
+var highScore = 0;
 
 window.onload = function() {
 
@@ -490,21 +491,21 @@ window.onload = function() {
 	var SceneGameOver = Class.create(Scene, {
 	    initialize: function(score) {
 			currentScene = 'SceneGameOver';
-	        var gameOverLabel, scoreLabel;
+	        var gameOverLabel, scoreLabel, highScoreLabel;
 	        Scene.apply(this);
 	        this.backgroundColor = 'black';
 	        // Game Over label
-			gameOverLabel = new Label("GAME OVER<br><br><br>Tap to Restart");
+			gameOverLabel = new Label("GAME OVER<br><br><br><br>Tap to Restart");
 			gameOverLabel.x = 200;
-			gameOverLabel.y = 110;
+			gameOverLabel.y = 50;
 			gameOverLabel.color = 'white';
 			gameOverLabel.font = '32px strong';
 			gameOverLabel.textAlign = 'center';
 
 			// Score label
-			scoreLabel = new Label('SCORE<br>' + score);
+			scoreLabel = new Label('SCORE<br>' + score + '<br>');
 			scoreLabel.x = 205;
-			scoreLabel.y = 182;
+			scoreLabel.y = 122;
 			scoreLabel.color = 'white';
 			scoreLabel.font = '16px strong';
 			scoreLabel.textAlign = 'center';
@@ -512,6 +513,19 @@ window.onload = function() {
 			// Add labels
 			this.addChild(gameOverLabel);
 			this.addChild(scoreLabel);
+
+			if (score > highScore) {
+				highScore = score;
+			}
+
+			highScoreLabel = new Label('HIGH SCORE<br>' + highScore);
+			highScoreLabel.x = 205;
+			highScoreLabel.y = 192;
+			highScoreLabel.color = 'white';
+			highScoreLabel.font = '16px strong';
+			highScoreLabel.textAlign = 'center';
+			this.addChild(highScoreLabel);
+
 
 			// Listen for taps
 			this.addEventListener(Event.TOUCH_START, this.touchToRestart);
