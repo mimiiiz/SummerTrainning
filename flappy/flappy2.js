@@ -36,13 +36,18 @@ window.onload = function() {
     var game = new Game(700, 400);
     var settings = Settings.create();
 
+    game.keybind(49, 'a');  //1キー
+    game.keybind(51, 'a');  //3キー
+    game.keybind(32, 'a');  //spaceキー
+    game.keybind(10, 'a');  //Enter1
+    game.keybind(13, 'a');  //Enter windows
+
     var btn = document.getElementById('open_settings')
     btn.addEventListener('click', function(event) {
     	event.stopPropagation();
     	game.pause();
         settings.open();
     })
-
 
     settings.on('close', function(){
     	game.resume();
@@ -186,13 +191,8 @@ window.onload = function() {
 
             // Update
             this.addEventListener(Event.ENTER_FRAME, this.update); //update enemy
-    		this.addEventListener("touchstart",function(e){
-	        	if(hero.y === posY){
-		        	vy = speed; 								//タッチされた際の初速度
-	            	jump = true;
-	            	this.score += 4;								//ジャンプ中フラグを立てる
-	        	}
-			});
+            this.addEventListener(Event.A_BUTTON_DOWN, this.onTouch)
+    		this.addEventListener("touchstart",this.onTouch);
 
             this.scoreTimer = 0;
             this.score = 0;
@@ -203,8 +203,13 @@ window.onload = function() {
 			this.addChild(enemyGroup);
 
         },
-
-        
+        onTouch: function(evt) {
+            if (this.hero.y === posY) {
+                vy = speed; 								//タッチされた際の初速度
+                jump = true;
+                this.score += 4;								//ジャンプ中フラグを立てる
+            }
+        },
         update: function(evt) {
 
             this.scoreTimer += evt.elapsed * 0.001;
@@ -392,7 +397,7 @@ window.onload = function() {
         		this.x = 0;
 				this.y = 115;
             }
-        	
+
 
             posX = this.x;
     		posY = this.y;
@@ -438,21 +443,21 @@ window.onload = function() {
             	this.scaleY = 0.15 + rand * 0.1;
             	this.x = 700; // create enemy begin from right of window
             	this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
-            
+
 
             }else if (scaleEnemy == 'large') {
             	this.scaleX = 0.45;
             	this.scaleY = 0.45 + rand * 0.1;
             	this.x = 700; // create enemy begin from right of window
             	this.y = ((327-(this.height*this.scaleY)/2) - 343/2)+6; //the bottom of enemy begin at edge of window
-            
+
 
             }else {
             	this.scaleX = 0.3;
             	this.scaleY = 0.13 + rand * 0.1;
             	this.x = 700; // create enemy begin from right of window
             	this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
-            
+
             }
             console.log("scaleEnemy = " + scaleEnemy);
 
