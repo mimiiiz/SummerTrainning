@@ -538,14 +538,24 @@ window.onload = function() {
 			highScoreLabel.textAlign = 'center';
 			this.addChild(highScoreLabel);
 
+		    game.keybind(49, 'a');  //1キー
+		    game.keybind(51, 'a');  //3キー
+		    game.keybind(32, 'a');  //spaceキー
+		    game.keybind(10, 'a');  //Enter1
+		    game.keybind(13, 'a');  //Enter windows
 
 			// Listen for taps
 			this.addEventListener(Event.TOUCH_START, this.touchToRestart);
+            this.addEventListener(Event.A_BUTTON_DOWN, this.touchToRestart)
+
 
 	    },
 	    touchToRestart: function(evt) {
 		    var game = Game.instance;
+
+
 		    game.replaceScene(new ThemeSelectScene());
+
 		}
 	});
 };
