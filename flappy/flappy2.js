@@ -242,11 +242,11 @@ window.onload = function() {
 
             // Check if it's time to create a new set of obstacles
             this.generateEnemyTimer += evt.elapsed * 0.001;
-            if (this.generateEnemyTimer >= 4 ) {
+            if (this.generateEnemyTimer >= 6 ) {
 				
             	if ((gameMode == '10times' &&countEnemy <= 9 && countEnemy != -1)||(gameMode == 'endless') ) {
 	                var enemy;
-	                this.generateEnemyTimer -= 4;
+	                this.generateEnemyTimer -= 6;
 	                enemy = new EnemyBG(Math.floor(Math.random() * 2  + 1));
 					this.enemyGroup.addChild(enemy);
 					countEnemy += 1;
@@ -554,9 +554,9 @@ window.onload = function() {
             game = Game.instance;
 
             if (speedEnemy == 1) {
-            	xSpeed = 70;
+            	xSpeed = 120;
             } else if (speedEnemy == 2) {
-            	xSpeed = 100;
+            	xSpeed = 150;
             } else if (speedEnemy == 4) {
             	xSpeed = 270;
             } else if (speedEnemy == 5) {
