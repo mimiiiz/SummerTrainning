@@ -31,6 +31,11 @@ var scaleHero = 'medium', scaleEnemy = 'medium', speedEnemy = 3, soundControl = 
 var currentTheme ,currentScene;
 var highScore = 0;
 
+var countEnemy = 0;
+var SOUND_VICTORY = 'sounds/victory.mp3'
+var gameMode = 'endless';
+
+
 window.onload = function() {
 
     var game = new Game(700, 400);
@@ -102,6 +107,18 @@ window.onload = function() {
 		console.log('selected soundControl = ' + soundControl);
 		})
 
+    var gameModeSelect = settings.addRadio({
+        title: 'Mode',
+        key: 'gameModeSelect',
+        description: 'selecte game mode',
+        choices: ['endless', '10times'],
+        defaultValue: 'endless'
+    })
+    gameModeSelect.on('settingsChange', function(event) {
+        gameMode = event.value;
+		console.log('selected gameMode = ' + gameMode);
+		})
+
 
 
     // 4 - Preload resources
@@ -118,7 +135,8 @@ window.onload = function() {
         SELECT_THEME_BG,
         SOUND_BG,
         SOUND_LOST,
-        THEME_1, THEME_2, THEME_3
+        THEME_1, THEME_2, THEME_3,
+        SOUND_VICTORY
         );
 
     game.fps = 32;
@@ -149,13 +167,16 @@ window.onload = function() {
          // The main gameplay scene.
         initialize: function() {
 			currentScene = 'SceneGame';
-            var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost;
+            var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost, sound_victory;
 
             Scene.apply(this);
+			countEnemy = 9;
+
 
             game = Game.instance;
             this.sound_bg = game.assets[SOUND_BG];
             this.sound_lost = game.assets[SOUND_LOST];
+            this.sound_victory = game.assets[SOUND_VICTORY];
             this.sound_bg.play();
 
             if (soundControl == 'on') {
@@ -204,11 +225,12 @@ window.onload = function() {
 
         },
         onTouch: function(evt) {
-            if (this.hero.y === posY) {
+            if (this.hero.y === posY ) {
                 vy = speed; 								//タッチされた際の初速度
                 jump = true;
-                this.score += 4;								//ジャンプ中フラグを立てる
-            }
+                this.score += 4;
+                							//ジャンプ中フラグを立てる
+            } 
         },
         update: function(evt) {
 
@@ -220,13 +242,30 @@ window.onload = function() {
 
             // Check if it's time to create a new set of obstacles
             this.generateEnemyTimer += evt.elapsed * 0.001;
-            if (this.generateEnemyTimer >= 4) {
-                var enemy;
-                this.generateEnemyTimer -= 4;
-                enemy = new EnemyBG(Math.floor(Math.random() * 2  + 1));
-				this.enemyGroup.addChild(enemy);
+            if (this.generateEnemyTimer >= 4 ) {
+				
+            	if ((gameMode == '10times' &&countEnemy <= 10 )||(gameMode == 'endless')) {
+	                var enemy;
+	                this.generateEnemyTimer -= 4;
+	                enemy = new EnemyBG(Math.floor(Math.random() * 2  + 1));
+					this.enemyGroup.addChild(enemy);
+					countEnemy += 1;
+					console.log("countEnemy : " + countEnemy);
+				}else if (gameMode == '10times' && countEnemy > 10) {
+            		// stop soundbg & start goal sound 
+			        if (soundControl == 'on') {
+						this.sound_bg.stop();
+						this.sound_victory.play();
+					}
+					this.enemyGroup.removeChild(this.enemy);
+					this.removeChild(this.enemyGroup)
+					// game.replaceScene(new SceneGameOver(this.score));
+    				// game.pause();
+					this.showVictory(this.score);
+           		 }	
 
             }
+            
 
             // Loop sound_bg
             if (this.sound_bg.currentTime >= this.sound_bg.duration ){
@@ -284,7 +323,63 @@ window.onload = function() {
             this.score = value;
             this.scoreLabel.text = 'SCORE<br>' + this.score;
 
-        }
+        }, 
+
+        showVictory: function(score) {
+			currentScene = 'SceneGoal';
+	        var goalLabel, scoreLabel, highScoreLabel;
+	        // this.backgroundColor = 'black';
+	        // Game Over label
+			goalLabel = new Label("VICTORY !<br><br><br><br>Tap to Restart");
+			goalLabel.x = 200;
+			goalLabel.y = 50;
+			goalLabel.color = '#ef5a23';
+			goalLabel.font = '32px strong';
+			goalLabel.textAlign = 'center';
+
+			// Score label
+			scoreLabel = new Label('SCORE<br>' + score + '<br>');
+			scoreLabel.x = 205;
+			scoreLabel.y = 122;
+			scoreLabel.color = '#ef5a23';
+			scoreLabel.font = '16px strong';
+			scoreLabel.textAlign = 'center';
+
+			// Add labels
+			this.addChild(goalLabel);
+			this.addChild(scoreLabel);
+
+			if (score > highScore) {
+				highScore = score;
+			}
+
+			highScoreLabel = new Label('HIGH SCORE<br>' + highScore);
+			highScoreLabel.x = 205;
+			highScoreLabel.y = 192;
+			highScoreLabel.color = '#ef5a23';
+			highScoreLabel.font = '16px strong';
+			highScoreLabel.textAlign = 'center';
+			this.addChild(highScoreLabel);
+
+		    game.keybind(49, 'a');  //1キー
+		    game.keybind(51, 'a');  //3キー
+		    game.keybind(32, 'a');  //spaceキー
+		    game.keybind(10, 'a');  //Enter1
+		    game.keybind(13, 'a');  //Enter windows
+
+			// Listen for taps
+			this.addEventListener(Event.TOUCH_START, this.touchToRestart);
+            this.addEventListener(Event.A_BUTTON_DOWN, this.touchToRestart)
+
+            countEnemy = 0;
+
+
+	    },
+	    touchToRestart: function(evt) {
+		    var game = Game.instance;
+		    game.replaceScene(new ThemeSelectScene());
+
+		}
     });
 
 	var ThemeSelectScene = Class.create(Scene, {
@@ -548,12 +643,12 @@ window.onload = function() {
 			this.addEventListener(Event.TOUCH_START, this.touchToRestart);
             this.addEventListener(Event.A_BUTTON_DOWN, this.touchToRestart)
 
+            countEnemy = 0;
+
 
 	    },
 	    touchToRestart: function(evt) {
 		    var game = Game.instance;
-
-
 		    game.replaceScene(new ThemeSelectScene());
 
 		}
