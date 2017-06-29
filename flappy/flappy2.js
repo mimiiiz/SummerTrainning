@@ -21,8 +21,8 @@ var THEME_2 = 'images/2_theme.png';
 var THEME_3 = 'images/3_theme.png';
 
 var posY, posX;
-var vy = 0;							//キャラクタの初速度初期値
-var speed = 5;						//ジャンプ中の初速度
+var vy = 0;							//initial velocity of character
+var speed = 5;						//Initial speed during jump
 var jump = false;
 var bg = new Sprite(950, 400);
 var scanner = null;
@@ -41,9 +41,9 @@ window.onload = function() {
     var game = new Game(700, 400);
     var settings = Settings.create();
 
-    game.keybind(49, 'a');  //1キー
-    game.keybind(51, 'a');  //3キー
-    game.keybind(32, 'a');  //spaceキー
+    game.keybind(49, 'a');  //1
+    game.keybind(51, 'a');  //3
+    game.keybind(32, 'a');  //space
     game.keybind(10, 'a');  //Enter1
     game.keybind(13, 'a');  //Enter windows
 
@@ -225,10 +225,10 @@ window.onload = function() {
         },
         onTouch: function(evt) {
             if (this.hero.y === posY ) {
-                vy = speed; 								//タッチされた際の初速度
-                jump = true;
-                this.score += 4;
-                							//ジャンプ中フラグを立てる
+                vy = speed; 								//Initial speed when touched
+                jump = true;								//Set a jumping flag
+                this.score += 4;							//score +4 when jump
+                							
             } 
         },
         update: function(evt) {
@@ -259,7 +259,6 @@ window.onload = function() {
 					
 					this.showVictory(this.score);
            		 }	
-
             }
             
 
@@ -269,22 +268,27 @@ window.onload = function() {
             }
 
             //  JUMPING   speed++;  speed%=15;
-            if(jump === true){						//ジャンプ中
-            	this.hero.y -= vy;						//加速度分キャラ位置移動(引き算なのは軸の方向のせい)
-            	vy-=0.15;							//加速度調整(マイナスもあるよ)
-            }else{							//ジャンプ中以外の処理
-                if(game.frame%5 === 0){				//5フレームごとに姿勢を変えよう
+            if(jump === true){						//Jumping 
+            	this.hero.y -= vy;	
+            	if (sizeEnemy == 'large') {
+            		vy-=0.10;
+            	}else{
+            		vy-=0.15;		//less = high , more = low
+            	}					
+            								
+            }else{							//not jump
+                if(game.frame%5 === 0){				
                     if(this.hero.frame === 1){
                         this.hero.frame = 2;
                     }else{
                         this.hero.frame = 1;
-                    }//1フレームと2フレームを交互に
+                    }
                 }
             }
-            if(this.hero.y > posY){						//下に落っこちないように
-                this.hero.y = posY;						//位置調整(加速度によっては食い込むよ)
-                vy = 0;								//次のジャンプまでは加速度0に
-                jump = false;						//ジャンプフラグも元に戻す
+            if(this.hero.y > posY){						//Do not fall down
+                this.hero.y = posY;						//Position adjustment (It will dig into depending on acceleration)
+                vy = 0;								//Acceleration 0 until the next jump
+                jump = false;						//restore the jump flag
             }
             // end JUMPING
 
@@ -295,7 +299,6 @@ window.onload = function() {
 
 			    // if (enemy.intersect(this.hero)){
 			    if (enemy.within(this.hero, 50)){
-					console.log('soundControl = ' + soundControl);
 
 			        // Game over stop sound
 			        if (soundControl == 'on') {
@@ -325,10 +328,6 @@ window.onload = function() {
         showVictory: function(score) {
 			currentScene = 'SceneGoal';
 	        var goalLabel, scoreLabel, highScoreLabel;
-	        // this.backgroundColor = 'black';
-	        // Game Over label
-	        // this.enemyGroup.removeChild(this.enemy);
-			// this.removeChild(this.enemyGroup)
 			goalLabel = new Label("VICTORY !<br><br><br><br>Tap to Restart");
 			goalLabel.x = 200;
 			goalLabel.y = 50;
@@ -470,8 +469,6 @@ window.onload = function() {
             	this.image = Game.instance.assets[HERO3];
             }
 
-            console.log("scaleHero = " + scaleHero);
-
             if (scaleHero == 'small') {
             	this.scaleX = 0.25;
         		this.scaleY = 0.25;
@@ -546,7 +543,6 @@ window.onload = function() {
             	this.y = (327-(this.height*this.scaleY)/2) - 343/2; //the bottom of enemy begin at edge of window
 
             }
-            console.log("scaleEnemy = " + scaleEnemy);
 
             this.rotationSpeed = 0;
             this.animationDuration = 0;
