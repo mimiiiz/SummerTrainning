@@ -257,8 +257,7 @@ window.onload = function() {
 						this.sound_bg.stop();
 						this.sound_victory.play();
 					}
-					this.enemyGroup.removeChild(this.enemy);
-					this.removeChild(this.enemyGroup)
+					
 					this.showVictory(this.score);
            		 }	
 
@@ -323,6 +322,8 @@ window.onload = function() {
 	        var goalLabel, scoreLabel, highScoreLabel;
 	        // this.backgroundColor = 'black';
 	        // Game Over label
+	        // this.enemyGroup.removeChild(this.enemy);
+			// this.removeChild(this.enemyGroup)
 			goalLabel = new Label("VICTORY !<br><br><br><br>Tap to Restart");
 			goalLabel.x = 200;
 			goalLabel.y = 50;
