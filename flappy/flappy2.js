@@ -170,7 +170,7 @@ window.onload = function() {
             var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost, sound_victory;
 
             Scene.apply(this);
-			countEnemy = 9;
+			countEnemy = 7;
 
 
             game = Game.instance;
@@ -244,14 +244,14 @@ window.onload = function() {
             this.generateEnemyTimer += evt.elapsed * 0.001;
             if (this.generateEnemyTimer >= 4 ) {
 				
-            	if ((gameMode == '10times' &&countEnemy <= 10 )||(gameMode == 'endless')) {
+            	if ((gameMode == '10times' &&countEnemy <= 9 && countEnemy != -1)||(gameMode == 'endless') ) {
 	                var enemy;
 	                this.generateEnemyTimer -= 4;
 	                enemy = new EnemyBG(Math.floor(Math.random() * 2  + 1));
 					this.enemyGroup.addChild(enemy);
 					countEnemy += 1;
 					console.log("countEnemy : " + countEnemy);
-				}else if (gameMode == '10times' && countEnemy > 10) {
+				}else if (gameMode == '10times' && countEnemy > 9 ) {
             		// stop soundbg & start goal sound 
 			        if (soundControl == 'on') {
 						this.sound_bg.stop();
@@ -371,7 +371,7 @@ window.onload = function() {
 			this.addEventListener(Event.TOUCH_START, this.touchToRestart);
             this.addEventListener(Event.A_BUTTON_DOWN, this.touchToRestart)
 
-            countEnemy = 0;
+            countEnemy = -1;
 
 
 	    },
