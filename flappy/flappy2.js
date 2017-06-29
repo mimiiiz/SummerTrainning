@@ -312,8 +312,14 @@ window.onload = function() {
         },
 
         setScore: function (value) {
-            this.score = value;
-            this.scoreLabel.text = 'SCORE<br>' + this.score;
+
+        	if (gameMode == '10times' && (countEnemy == 11 || countEnemy == -1)) {
+        		// victory then score stop
+        		this.scoreLabel.text = 'SCORE<br>' + this.score;
+        	}else {
+	            this.score = value;
+	            this.scoreLabel.text = 'SCORE<br>' + this.score;
+        	}
 
         }, 
 
@@ -453,7 +459,6 @@ window.onload = function() {
         // The player character.
         initialize: function() {
             // 1 - Call superclass constructor
-        console.log("new Hero");
 
             if(currentTheme == 1){
             	Sprite.apply(this,[270, 210]);
@@ -565,7 +570,6 @@ window.onload = function() {
             } else {
             	xSpeed = 200;
             }
-            console.log("speedEnemy = " + xSpeed);
 
 
             this.x -= xSpeed * evt.elapsed * 0.001;
