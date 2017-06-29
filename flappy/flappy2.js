@@ -259,8 +259,6 @@ window.onload = function() {
 					}
 					this.enemyGroup.removeChild(this.enemy);
 					this.removeChild(this.enemyGroup)
-					// game.replaceScene(new SceneGameOver(this.score));
-    				// game.pause();
 					this.showVictory(this.score);
            		 }	
 
@@ -290,11 +288,6 @@ window.onload = function() {
                 vy = 0;								//次のジャンプまでは加速度0に
                 jump = false;						//ジャンプフラグも元に戻す
             }
-     //        //背景処理
-     //        if(game.frame%950 ===0){
- 				// bg.x -= 950;							//背景を右にずらす（ループさせる）
-     //        }
-     //        bg.x++
             // end JUMPING
 
             // Check collision
@@ -500,12 +493,6 @@ window.onload = function() {
             this.animationDuration = 0;
             this.addEventListener(Event.ENTER_FRAME, this.updateAnimation);
         },
-        // regenerateHero: function(){
-        // 	console.log("regenerateHero");
-        // 	this.game.removeChild(hero);
-        // 	hero = new Hero();
-        // 	this.game.addChild(hero);
-        // },
 
         updateAnimation: function (evt) {
             this.animationDuration += evt.elapsed * 0.001;
