@@ -172,7 +172,6 @@ window.onload = function() {
             Scene.apply(this);
 			countEnemy = 7;
 
-
             game = Game.instance;
             this.sound_bg = game.assets[SOUND_BG];
             this.sound_lost = game.assets[SOUND_LOST];
