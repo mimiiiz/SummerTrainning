@@ -306,6 +306,7 @@ window.onload = function() {
 
 			    // if (enemy.intersect(this.hero)){
 			    if (enemy.within(this.hero, 50)){
+			    	this.hero.rotate(-60);
 
 			        // Game over stop sound
 			        if (soundControl == 'on') {
