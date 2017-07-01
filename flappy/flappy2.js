@@ -34,6 +34,7 @@ var highScore = 0;
 var countEnemy = 0;
 var SOUND_VICTORY = 'sounds/victory.mp3'
 var gameMode = 'endless';
+var SOUND_JUMP = 'sounds/jump.mp3'
 
 
 window.onload = function() {
@@ -136,7 +137,8 @@ window.onload = function() {
         SOUND_BG,
         SOUND_LOST,
         THEME_1, THEME_2, THEME_3,
-        SOUND_VICTORY
+        SOUND_VICTORY,
+        SOUND_JUMP
         );
 
     game.fps = 32;
@@ -167,7 +169,7 @@ window.onload = function() {
          // The main gameplay scene.
         initialize: function() {
 			currentScene = 'SceneGame';
-            var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost, sound_victory;
+            var game, EnemyBG, hero, sound_bg , enemyGroup, sound_lost, sound_victory, sound_jump;
 
             Scene.apply(this);
 			countEnemy = 7;
@@ -176,6 +178,7 @@ window.onload = function() {
             this.sound_bg = game.assets[SOUND_BG];
             this.sound_lost = game.assets[SOUND_LOST];
             this.sound_victory = game.assets[SOUND_VICTORY];
+            this.sound_jump = game.assets[SOUND_JUMP];
             this.sound_bg.play();
 
             if (soundControl == 'on') {
@@ -228,6 +231,10 @@ window.onload = function() {
                 vy = speed; 								//Initial speed when touched
                 jump = true;								//Set a jumping flag
                 this.score += 4;							//score +4 when jump
+                if ((gameMode == '10times' &&countEnemy <= 10 && countEnemy != -1)||(gameMode == 'endless') ) { 
+                	// don't play jump sound in victory scene
+                	this.sound_jump.play();
+            	}								
                 							
             } 
         },
@@ -268,8 +275,8 @@ window.onload = function() {
             }
 
             //  JUMPING   speed++;  speed%=15;
-            if(jump === true){						//Jumping 
-            	this.hero.y -= vy;	
+            if(jump === true){			//Jumping 
+            	this.hero.y -= vy;
             	if (sizeEnemy == 'large') {
             		vy-=0.10;
             	}else{
@@ -631,7 +638,6 @@ window.onload = function() {
             this.addEventListener(Event.A_BUTTON_DOWN, this.touchToRestart)
 
             countEnemy = 0;
-
 
 	    },
 	    touchToRestart: function(evt) {
